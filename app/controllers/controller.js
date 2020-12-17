@@ -1,4 +1,4 @@
-const Model = require("../models/model.js");
+const Item = require("../models/model.js");
 
 /*
 // Create and Save a new Customer
@@ -116,3 +116,42 @@ exports.deleteAll = (req, res) => {
   });
 };
 */
+
+
+exports.addItem = (req, res) => {
+  // Validate request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+
+  // Create a Customer
+  const item = new Item({
+       category: req.body.category,
+      quantity: req.body.quantity,
+      description: req.body.description,
+      weight: req.body.weight,
+      image: req.body.image,
+      price: req.body.price
+  });
+
+  // Save Customer in the database
+  Item.addItem(item, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Item."
+      });
+    else res.send(data);
+  });
+};
+
+
+// exports.retrieveItems = (req, res) => {
+//   let query = `SELECT * FROM items `;
+//   myDB.con.query(query, (err, results) => {
+//     if (err) throw err;
+//       res.send(results);
+//   });
+// };

@@ -26,21 +26,56 @@ const Item = function(item) {
 // Now you need to create the tables (users,items) using terminal 
 
 //==========================================================================
-/*
-//add new record to items table
-Item.create = (newItem, result) => {
-  sql.query("INSERT INTO items SET ?", newItem, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
 
-    console.log("created item: ", { id: res.insertId, ...newItem });
-    result(null, { id: res.insertId, ...newItem });
-  });
+//add new record to items table
+// Item.create = (newItem, result) => {
+//   sql.query("INSERT INTO items SET ?", newItem, (err, res) => {
+//     if (err) {
+//       console.log("error: ", err);
+//       result(err, null);
+//       return;
+//     }
+
+//     console.log("created item: ", { id: res.insertId, ...newItem });
+//     result(null, { id: res.insertId, ...newItem });
+//   });
+// };
+
+
+Item.addItem = result => {
+  // var item = {
+  //     category: req.body.category,
+  //     quantity: req.body.quantity,
+  //     description: req.body.description,
+  //     weight: req.body.weight,
+  //     image: req.body.image,
+  //     price: req.body.price
+      
+  // };
+  var query = `INSERT INTO items
+        (
+            category, quantity, description, weight, image, price 
+        )
+        VALUES
+         (?,?,?,?,?,? )`;
+         sql.con.query(
+      query,
+      [
+          item.category,
+          item.quantity,
+          item.description,
+          item.weight,
+          item.image,
+          item.price,
+      ],
+      (err, results) => {
+        if (err) throw err;
+          res.send(item);
+      }
+  );
 };
-*/
+
+
 
 /*
 Customer.findById = (customerId, result) => {
@@ -132,5 +167,5 @@ Customer.removeAll = result => {
 */
 
 
-module.exports = User;
+// module.exports = User;
 module.exports = Item;
