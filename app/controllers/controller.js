@@ -1,5 +1,6 @@
-const Customer = require("../models/customer.model.js");
+const Model = require("../models/model.js");
 
+/*
 // Create and Save a new Customer
 exports.create = (req, res) => {
   // Validate request
@@ -114,3 +115,4 @@ exports.deleteAll = (req, res) => {
     else res.send({ message: `All Customers were deleted successfully!` });
   });
 };
+*/

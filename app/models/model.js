@@ -1,25 +1,48 @@
 const sql = require("./db.js");
 
-// constructor
-const Customer = function(customer) {
-  this.email = customer.email;
-  this.name = customer.name;
-  this.active = customer.active;
+//========================================================================
+// constructor (Tables) model of tables
+const User = function(user) {
+  this.username = user.username;
+  this.email = user.email;
+  this.password = user.password;
+  this.phoneNumber = user.phoneNumber;
+  this.location = user.location;
+  this.image = user.image;
+  this.iBan = user.iBan; //bank account ==> not required to fill it now
 };
 
-Customer.create = (newCustomer, result) => {
-  sql.query("INSERT INTO customers SET ?", newCustomer, (err, res) => {
+const Item = function(item) {
+  this.category = item.category;
+  this.quantity = item.quantity;
+  this.weight = item.weight;
+  this.description = item.description;
+  this.image = item.image;
+  this.price = item.price;
+  //this.foreign key = user.id;
+};
+
+//==========================================================================
+// Now you need to create the tables (users,items) using terminal 
+
+//==========================================================================
+/*
+//add new record to items table
+Item.create = (newItem, result) => {
+  sql.query("INSERT INTO items SET ?", newItem, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
 
-    console.log("created customer: ", { id: res.insertId, ...newCustomer });
-    result(null, { id: res.insertId, ...newCustomer });
+    console.log("created item: ", { id: res.insertId, ...newItem });
+    result(null, { id: res.insertId, ...newItem });
   });
 };
+*/
 
+/*
 Customer.findById = (customerId, result) => {
   sql.query(`SELECT * FROM customers WHERE id = ${customerId}`, (err, res) => {
     if (err) {
@@ -106,5 +129,8 @@ Customer.removeAll = result => {
     result(null, res);
   });
 };
+*/
 
-module.exports = Customer;
+
+module.exports = User;
+module.exports = Item;
