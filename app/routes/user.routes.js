@@ -1,8 +1,8 @@
 module.exports = app => {
-  const customers = require("../controllers/controller.js");
-
-  // Create a new Customer
-  // app.post("/customers", customers.create);
+  const controller = require("../controllers/user.controller.js");
+  app.get("/see", controller.now);
+  // Create a new User
+  app.post("/signup", controller.create);
 
   // Retrieve all Customers
   // app.get("/customers", customers.findAll);
@@ -18,4 +18,6 @@ module.exports = app => {
 
   // Create a new Customer
   // app.delete("/customers", customers.deleteAll);
+
+
 };

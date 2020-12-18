@@ -23,21 +23,21 @@ const Item = function(item) {
 };
 
 //==========================================================================
-// Now you need to create the tables (users,items) using terminal 
+// Now you need to create the tables (users,items) using terminal/mysql workbench
 
 //==========================================================================
 /*
 //add new record to items table
-Item.create = (newItem, result) => {
-  sql.query("INSERT INTO items SET ?", newItem, (err, res) => {
+Customer.create = (newCustomer, result) => {
+  sql.query("INSERT INTO items SET ?", newCustomer, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
 
-    console.log("created item: ", { id: res.insertId, ...newItem });
-    result(null, { id: res.insertId, ...newItem });
+    console.log("created item: ", { id: res.insertId, ...newCustomer });
+    result(null, { id: res.insertId, ...newCustomer });
   });
 };
 */
@@ -130,6 +130,20 @@ Customer.removeAll = result => {
   });
 };
 */
+
+//add new record to users table
+User.create = (newUser, result) => {
+  sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    console.log("created user: ", { id: res.insertId, ...newUser });
+    result(null, { id: res.insertId, ...newUser });
+  });
+};
 
 
 module.exports = User;

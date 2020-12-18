@@ -1,4 +1,4 @@
-const Model = require("../models/model.js");
+const User = require("../models/user.model.js");
 
 /*
 // Create and Save a new Customer
@@ -116,3 +116,51 @@ exports.deleteAll = (req, res) => {
   });
 };
 */
+
+exports.now = (req, res) => {
+  res.send({message: "hiiii"})
+}
+
+//create and save new user
+exports.create = (req, res) => {
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+
+  // Create a Customer
+  const user = new User({
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+    phoneNumber: req.body.phoneNumber,
+    location: req.body.location,
+    image: req.body.image,
+    iBan: req.body.iBan
+  });
+
+  // Save Customer in the database
+User.create(user, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the User."
+      });
+    else res.send(data);
+  });
+};
+
+/*
+{
+    "username": "areenbadran",
+    "email": "areenbadran9@gmail.com",
+    "password": "areenwow1234",
+    "phoneNumber": "0775498673",
+    "location": "12454",
+    "image": "url146416454",
+    "iBan": "skskss"
+}
+*/
+
+
