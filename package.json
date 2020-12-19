@@ -25,6 +25,7 @@
   "homepage": "https://github.com/Areenbadran/server#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.6"

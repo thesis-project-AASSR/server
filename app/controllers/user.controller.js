@@ -151,6 +151,22 @@ User.create(user, (err, data) => {
   });
 };
 
+// exports.check = (req, res) => {
+//   const info = {
+//     username: req.body.username,
+//     password: req.body.password
+//   };
+//   if (info.username && info.password) {
+//     User.check(info ,(err, data) => {
+//       if (err)
+//         res.status(500).send({
+//           message:
+//             err.message || "Some error occurred while retrieving customers."
+//         }); 
+//     });
+//   } 
+//   };
+
 /*
 {
     "username": "areenbadran",

@@ -8,4 +8,13 @@ var connection = mysql.createPool({
   database: dbConfig.DB
 });
 
+//test connection to mysql db
+// connection.connect( (error) => {
+//   if (error) {
+//     console.log(error);
+//   } else {
+//     console.log("MYSQL connected")
+//   }
+// })
+
 module.exports = connection;

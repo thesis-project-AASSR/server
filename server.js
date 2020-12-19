@@ -14,6 +14,17 @@ app.get("/", (req, res) => {
   res.json({ message: "welcome to our deployed app." });
 });
 
+//authentication 
+// app.post('/signup', (req, res) => {
+//   //   var username =  req.body.username,
+//   // var email = req.body.email,
+//   //   var password = req.body.password,
+//   //   var phoneNumber = req.body.phoneNumber,
+//   //   var location = req.body.location,
+//   //   var image = req.body.image,
+//   //   var iBan = req.body.iBan
+// })
+
 require("./app/routes/user.routes.js")(app);
 
 // set port, listen for requests

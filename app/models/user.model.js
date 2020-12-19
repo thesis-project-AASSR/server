@@ -146,5 +146,25 @@ User.create = (newUser, result) => {
 };
 
 
+// User.check = (info, result) => {
+//   sql.query("SELECT * FROM users WHERE username = ? AND password = ?", [info.username, info.password], (err, res) => {
+
+//     if (err) {
+//       console.log("error: ", err);
+//       result(err, null);
+//       return;
+//     }
+
+//       if (result) {
+//         console.log("logged in");
+//       } else {
+//         console.log("no user found")
+//       }
+    
+//     console.log("created user: ", { id: res.insertId, ...info });
+//     result(null, { id: res.insertId, ...info });
+//   });
+// };
+ 
 module.exports = User;
-module.exports = Item;
+// module.exports = Item;
