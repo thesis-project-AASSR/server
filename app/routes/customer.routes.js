@@ -4,8 +4,8 @@ module.exports = app => {
   // Create a new Customer
   // app.post("/customers", customers.create);
 
-  // Retrieve all Customers
-  // app.get("/customers", customers.findAll);
+  //Retrieve all Customers
+  app.get("/ItemsList", customers.findAll);
 
   // Retrieve a single Customer with customerId
   // app.get("/customers/:customerId", customers.findOne);
