@@ -40,10 +40,10 @@ app.post("/signup", (req, res) => {
     if (err) {
       console.log(err);
     }
-    if (username) {
-      db.query('SELECT * FROM users WHERE username = ?', [username], (error, results) => {
+    if (email) {
+      db.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
         if (results.length > 0) {
-          res.send({message: "username already exist"});
+          res.send({message: "email already exist"});
         } else {
           db.query(
             "INSERT INTO users (username, email, password, phoneNumber, location, image, iBan ) VALUES (?,?,?,?,?,?,?)",
