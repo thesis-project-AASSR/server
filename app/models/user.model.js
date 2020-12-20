@@ -132,18 +132,18 @@ Customer.removeAll = result => {
 */
 
 //add new record to users table
-User.create = (newUser, result) => {
-  sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
+// User.create = (newUser, result) => {
+//   sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
+//     if (err) {
+//       console.log("error: ", err);
+//       result(err, null);
+//       return;
+//     }
 
-    console.log("created user: ", { id: res.insertId, ...newUser });
-    result(null, { id: res.insertId, ...newUser });
-  });
-};
+//     console.log("created user: ", { id: res.insertId, ...newUser });
+//     result(null, { id: res.insertId, ...newUser });
+//   });
+// };
 
 
 // User.check = (info, result) => {

@@ -122,34 +122,34 @@ exports.now = (req, res) => {
 }
 
 //create and save new user
-exports.create = (req, res) => {
-  if (!req.body) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-  }
+// exports.create = (req, res) => {
+//   if (!req.body) {
+//     res.status(400).send({
+//       message: "Content can not be empty!"
+//     });
+//   }
 
-  // Create a Customer
-  const user = new User({
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password,
-    phoneNumber: req.body.phoneNumber,
-    location: req.body.location,
-    image: req.body.image,
-    iBan: req.body.iBan
-  });
+//   // Create a Customer
+//   const user = new User({
+//     username: req.body.username,
+//     email: req.body.email,
+//     password: req.body.password,
+//     phoneNumber: req.body.phoneNumber,
+//     location: req.body.location,
+//     image: req.body.image,
+//     iBan: req.body.iBan
+//   });
 
-  // Save Customer in the database
-User.create(user, (err, data) => {
-    if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the User."
-      });
-    else res.send(data);
-  });
-};
+//   // Save Customer in the database
+// User.create(user, (err, data) => {
+//     if (err)
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred while creating the User."
+//       });
+//     else res.send(data);
+//   });
+// };
 
 // exports.check = (req, res) => {
 //   const info = {

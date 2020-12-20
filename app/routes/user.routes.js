@@ -6,7 +6,7 @@ module.exports = app => {
 
 
   // Create a new User (Signup)
-  app.post("/signup", controller.create);
+  // app.post("/signup", controller.create);
 
   // Login
   // app.post("/login", controller.check);
