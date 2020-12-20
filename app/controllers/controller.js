@@ -1,6 +1,7 @@
 const User = require("../models/user.model.js");
-
 const Item = require("../models/item.model.js");
+
+
 //add items to our database 
 exports.addItem = (req, res) => {
   // Validate request
@@ -10,7 +11,7 @@ exports.addItem = (req, res) => {
     });
   }
   console.log(".......",req.body);   //the object (data) which we get from front end
-  // Create a Customer
+  // items send by the front end 
   const item = ({
        category: req.body.category,
       quantity: req.body.quantity,
@@ -43,7 +44,7 @@ exports.updateitems = (req, res) => {
   }
 
   console.log(req.body);
-
+// update the items in our database
   Item.updateById(
     req.params.id,
     new Item(req.body),
@@ -64,7 +65,7 @@ exports.updateitems = (req, res) => {
   );
 };
 
-
+//retrieve all the items in our database
 exports.findAll = (req, res) => {
   Item.getAll((err, data) => {
     if (err)
