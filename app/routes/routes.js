@@ -1,8 +1,21 @@
 module.exports = app => {
-  const controller = require("../controllers/user.controller.js");
+  const controller = require("../controllers/controller.js");
+  
+  app.post("/items", controller.addItem);
+  app.get("/ItemsList", controller.findAll);
 
 
-  app.get("/see", controller.now);
+
+
+  // Update a items with itemsId
+
+  app.put("/items/:id", controller.updateitems);
+
+  app.get("/ItemsList", controller.findAll);   // this url it the same as api in front end 
+
+
+
+  // app.get("/see", controller.now);
 
 
   // Create a new User (Signup)
@@ -26,5 +39,8 @@ module.exports = app => {
   // Create a new Customer
   // app.delete("/customers", customers.deleteAll);
 
-
 };
+
+
+
+// app.get("/items", customers.retrieveItems);
