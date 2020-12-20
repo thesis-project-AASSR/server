@@ -132,5 +132,19 @@ Customer.removeAll = result => {
 */
 
 
+Item.getAll = result => {
+  sql.query("SELECT * FROM items", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    
+    result(null, res);
+  });
+};
+
+
 module.exports = User;
 module.exports = Item;
