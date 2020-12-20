@@ -144,6 +144,7 @@ exports.addItem = (req, res) => {
           err.message || "Some error occurred while creating the Item."
       });
     else res.send(data);
+    // console.log("data:",data)
   });
 };
 
@@ -155,3 +156,14 @@ exports.addItem = (req, res) => {
 //       res.send(results);
 //   });
 // };
+
+exports.findAll = (req, res) => {
+  Item.getAll((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving customers."
+      });
+    else res.send(data);
+  });
+};

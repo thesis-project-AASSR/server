@@ -19,6 +19,7 @@ module.exports = app => {
   // Create a new Customer
   // app.delete("/customers", customers.deleteAll);
   app.post("/items", Items.addItem);
+  app.get("/ItemsList", Items.findAll);
 };
 
 
