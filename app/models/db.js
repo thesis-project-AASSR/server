@@ -9,13 +9,16 @@ const dbConfig = require("../config/db.config.js");
 // });
 
 
+// module.exports = connection;
+
+
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "123",
   database: "stock",
 });
-//connecting mysql and creating 5 tables in our stock; called cars ,users, emails, wishlist, feedbacks.
+//connecting mysql and creating 2 tables in our stock; called items, users
 con.connect();
 setInterval(function() {
   con.query('SELECT 1');
@@ -28,4 +31,6 @@ con.query(Users, function(err, result) {
   console.log("items Table created!");
 });
 
+
 module.exports = con;
+

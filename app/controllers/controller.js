@@ -1,6 +1,9 @@
-const Item = require("../models/model.js");
 
-/*
+
+
+const User = require("../models/user.model.js");
+//
+const Item = require("../models/item.model.js");
 // Create and Save a new Customer
 exports.create = (req, res) => {
   // Validate request
@@ -29,93 +32,134 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all Customers from the database.
-exports.findAll = (req, res) => {
-  Customer.getAll((err, data) => {
-    if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving customers."
-      });
-    else res.send(data);
-  });
-};
+// exports.findAll = (req, res) => {
+//   Customer.getAll((err, data) => {
+//     if (err)
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred while retrieving customers."
+//       });
+//     else res.send(data);
+//   });
+// };
 
 // Find a single Customer with a customerId
-exports.findOne = (req, res) => {
-  Customer.findById(req.params.customerId, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found Customer with id ${req.params.customerId}.`
-        });
-      } else {
-        res.status(500).send({
-          message: "Error retrieving Customer with id " + req.params.customerId
-        });
-      }
-    } else res.send(data);
-  });
-};
+// exports.findOne = (req, res) => {
+//   Customer.findById(req.params.customerId, (err, data) => {
+//     if (err) {
+//       if (err.kind === "not_found") {
+//         res.status(404).send({
+//           message: `Not found Customer with id ${req.params.customerId}.`
+//         });
+//       } else {
+//         res.status(500).send({
+//           message: "Error retrieving Customer with id " + req.params.customerId
+//         });
+//       }
+//     } else res.send(data);
+//   });
+// };
 
-// Update a Customer identified by the customerId in the request
-exports.update = (req, res) => {
-  // Validate Request
-  if (!req.body) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-  }
+// // Update a Customer identified by the customerId in the request
+// exports.update = (req, res) => {
+//   // Validate Request
+//   if (!req.body) {
+//     res.status(400).send({
+//       message: "Content can not be empty!"
+//     });
+//   }
 
-  console.log(req.body);
+//   console.log(req.body);
 
-  Customer.updateById(
-    req.params.customerId,
-    new Customer(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found Customer with id ${req.params.customerId}.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error updating Customer with id " + req.params.customerId
-          });
-        }
-      } else res.send(data);
-    }
-  );
-};
+//   Customer.updateById(
+//     req.params.customerId,
+//     new Customer(req.body),
+//     (err, data) => {
+//       if (err) {
+//         if (err.kind === "not_found") {
+//           res.status(404).send({
+//             message: `Not found Customer with id ${req.params.customerId}.`
+//           });
+//         } else {
+//           res.status(500).send({
+//             message: "Error updating Customer with id " + req.params.customerId
+//           });
+//         }
+//       } else res.send(data);
+//     }
+//   );
+// };
 
-// Delete a Customer with the specified customerId in the request
-exports.delete = (req, res) => {
-  Customer.remove(req.params.customerId, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found Customer with id ${req.params.customerId}.`
-        });
-      } else {
-        res.status(500).send({
-          message: "Could not delete Customer with id " + req.params.customerId
-        });
-      }
-    } else res.send({ message: `Customer was deleted successfully!` });
-  });
-};
+// // Delete a Customer with the specified customerId in the request
+// exports.delete = (req, res) => {
+//   Customer.remove(req.params.customerId, (err, data) => {
+//     if (err) {
+//       if (err.kind === "not_found") {
+//         res.status(404).send({
+//           message: `Not found Customer with id ${req.params.customerId}.`
+//         });
+//       } else {
+//         res.status(500).send({
+//           message: "Could not delete Customer with id " + req.params.customerId
+//         });
+//       }
+//     } else res.send({ message: `Customer was deleted successfully!` });
+//   });
+// };
 
-// Delete all Customers from the database.
-exports.deleteAll = (req, res) => {
-  Customer.removeAll((err, data) => {
-    if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all customers."
-      });
-    else res.send({ message: `All Customers were deleted successfully!` });
-  });
-};
-*/
+// // Delete all Customers from the database.
+// exports.deleteAll = (req, res) => {
+//   Customer.removeAll((err, data) => {
+//     if (err)
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred while removing all customers."
+//       });
+//     else res.send({ message: `All Customers were deleted successfully!` });
+//   });
+// };
+
+
+
+// exports.addItem = (req, res) => {
+//   // Validate request
+//   if (!req.body) {
+//     res.status(400).send({
+//       message: "Content can not be empty!"
+//     });
+//   }
+
+//   // Create a Customer
+//   const item = new Item({
+//        category: req.body.category,
+//       quantity: req.body.quantity,
+//       description: req.body.description,
+//       weight: req.body.weight,
+//       image: req.body.image,
+//       price: req.body.price
+//   });
+
+//   // Save Customer in the database
+//   Item.addItem(item, (err, data) => {
+//     if (err)
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred while creating the Item."
+//       });
+//     else res.send(data);
+//     // console.log("data:",data)
+//   });
+// };
+
+
+// // exports.retrieveItems = (req, res) => {
+// //   let query = `SELECT * FROM items `;
+// //   myDB.con.query(query, (err, results) => {
+// //     if (err) throw err;
+// //       res.send(results);
+// //   });
+// // };
+
 
 
 exports.addItem = (req, res) => {
@@ -125,7 +169,7 @@ exports.addItem = (req, res) => {
       message: "Content can not be empty!"
     });
   }
-
+  console.log(".......",req.body);   //the object (data) which we get from front end
   // Create a Customer
   const item = new Item({
        category: req.body.category,
@@ -147,6 +191,64 @@ exports.addItem = (req, res) => {
     // console.log("data:",data)
   });
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Update a items identified by the itemsId in the request
+exports.updateitems = (req, res) => {
+  // Validate Request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+
+  console.log(req.body);
+
+  Item.updateById(
+    req.params.id,
+    new Item(req.body),
+    (err, data) => {
+      console.log("id", req.params.id)
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found Customer with id ${req.params.id}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating Customer with id " + req.params.id
+          });
+        }
+      } else res.send(data);
+    }
+  );
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // exports.retrieveItems = (req, res) => {

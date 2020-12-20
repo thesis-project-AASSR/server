@@ -12,68 +12,55 @@ const User = function(user) {
   this.iBan = user.iBan; //bank account ==> not required to fill it now
 };
 
-const Item = function(item) {
-  this.category = item.category;
-  this.quantity = item.quantity;
-  this.weight = item.weight;
-  this.description = item.description;
-  this.image = item.image;
-  this.price = item.price;
-  //this.foreign key = user.id;
-};
 
 //==========================================================================
-// Now you need to create the tables (users,items) using terminal 
+// Now you need to create the tables (users,items) using terminal/mysql workbench
 
 //==========================================================================
-Item.addItem = (newItem, result) => {
-  var mySql = `INSERT INTO items
-        (
-            category, quantity, description, weight, image, price 
-        )
-        VALUES
-         (?,?,?,?,?,? )`;
-         sql.query(mySql,
-            [
-              newItem.category,
-              newItem.quantity,
-              newItem.description,
-              newItem.weight,
-              newItem.image,
-              newItem.price,
-            ],(err, res) => {
-                  if (err) {
-                    console.log("error: ", err);
-                    result(err, null);
-                    return;
-                  }
 
-        // console.log("insertId",res.insertId)  /// id >> 15
-       
-        // console.log("newItem",newItem)    /* item:  { id: 15,
-        //                                               category: 'metal',
-        //                                               quantity: '55',} */
 
-        // console.log("...newItem", {...newItem})  /*  =>   {category: 'metal',
-        //                                                    quantity: '55',} */
-            
-        
-        console.log("created item: ", { id: res.insertId, ...newItem });
-            result(null, { id: res.insertId, ...newItem });
-          });
-};
 
-Item.getAll = result => {
-  sql.query("SELECT * FROM items", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-    console.log("customers: ", res);
-    result(null, res);
-  });
-};
+
+
+
+
+
+
+
+// // up date query
+
+
+// Customer.updateById = (id, item, result) => {
+//   sql.query(
+//     "UPDATE items SET email = ?, name = ?, active = ? WHERE id = ?",
+//     [customer.email, customer.name, customer.active, id],
+//     (err, res) => {
+//       if (err) {
+//         console.log("error: ", err);
+//         result(null, err);
+//         return;
+//       }
+
+//       if (res.affectedRows == 0) {
+//         // not found Customer with the id
+//         result({ kind: "not_found" }, null);
+//         return;
+//       }
+
+//       console.log("updated customer: ", { id: id, ...customer });
+//       result(null, { id: id, ...customer });
+//     }
+//   );
+// };
+
+
+
+
+
+
+
+
+
 
 //add new record to items table
 // Item.create = (newItem, result) => {
@@ -181,6 +168,40 @@ Customer.removeAll = result => {
 };
 */
 
+//add new record to users table
+// User.create = (newUser, result) => {
+//   sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
+//     if (err) {
+//       console.log("error: ", err);
+//       result(err, null);
+//       return;
+//     }
 
+//     console.log("created user: ", { id: res.insertId, ...newUser });
+//     result(null, { id: res.insertId, ...newUser });
+//   });
+// };
+
+
+// User.check = (info, result) => {
+//   sql.query("SELECT * FROM users WHERE username = ? AND password = ?", [info.username, info.password], (err, res) => {
+
+//     if (err) {
+//       console.log("error: ", err);
+//       result(err, null);
+//       return;
+//     }
+
+//       if (result) {
+//         console.log("logged in");
+//       } else {
+//         console.log("no user found")
+//       }
+    
+//     console.log("created user: ", { id: res.insertId, ...info });
+//     result(null, { id: res.insertId, ...info });
+//   });
+// };
+ 
 // module.exports = User;
-module.exports = Item;
+module.exports = User;
