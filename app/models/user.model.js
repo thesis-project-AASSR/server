@@ -12,35 +12,63 @@ const User = function(user) {
   this.iBan = user.iBan; //bank account ==> not required to fill it now
 };
 
-const Item = function(item) {
-  this.category = item.category;
-  this.quantity = item.quantity;
-  this.weight = item.weight;
-  this.description = item.description;
-  this.image = item.image;
-  this.price = item.price;
-  //this.foreign key = user.id;
-};
 
 //==========================================================================
 // Now you need to create the tables (users,items) using terminal/mysql workbench
 
 //==========================================================================
-/*
-//add new record to items table
-Customer.create = (newCustomer, result) => {
-  sql.query("INSERT INTO items SET ?", newCustomer, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
 
-    console.log("created item: ", { id: res.insertId, ...newCustomer });
-    result(null, { id: res.insertId, ...newCustomer });
-  });
-};
-*/
+// // up date query
+
+
+// Customer.updateById = (id, item, result) => {
+//   sql.query(
+//     "UPDATE items SET email = ?, name = ?, active = ? WHERE id = ?",
+//     [customer.email, customer.name, customer.active, id],
+//     (err, res) => {
+//       if (err) {
+//         console.log("error: ", err);
+//         result(null, err);
+//         return;
+//       }
+
+//       if (res.affectedRows == 0) {
+//         // not found Customer with the id
+//         result({ kind: "not_found" }, null);
+//         return;
+//       }
+
+//       console.log("updated customer: ", { id: id, ...customer });
+//       result(null, { id: id, ...customer });
+//     }
+//   );
+// };
+
+
+
+
+
+
+
+
+
+
+//add new record to items table
+// Item.create = (newItem, result) => {
+//   sql.query("INSERT INTO items SET ?", newItem, (err, res) => {
+//     if (err) {
+//       console.log("error: ", err);
+//       result(err, null);
+//       return;
+//     }
+
+//     console.log("created item: ", { id: res.insertId, ...newItem });
+//     result(null, { id: res.insertId, ...newItem });
+//   });
+// };
+
+
+
 
 /*
 Customer.findById = (customerId, result) => {
@@ -166,5 +194,5 @@ Customer.removeAll = result => {
 //   });
 // };
  
+// module.exports = User;
 module.exports = User;
-// module.exports = Item;

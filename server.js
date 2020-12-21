@@ -4,18 +4,22 @@ const db = require("./app/models/db");
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
-var fs = require('fs');
+const cors = require('cors');
+const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config({ path: '../../.env' });
-
 const app = express();
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
-
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.urlencoded({ extended: false }));
+
+
+//using CORS
+app.use(cors());
+
 
 // simple route
 app.get("/", (req, res) => {
@@ -87,6 +91,7 @@ app.post("/signin", (req, res) => {
         })
           //creates my session
         // req.session.user =  {auth:true,token: token, result: result}
+        console.log("signed user: ", {token: token});
         res.json({auth:true, token: token, result: result});
         }
         else {
@@ -104,7 +109,8 @@ app.post("/signin", (req, res) => {
 
 
 
-require("./app/routes/user.routes.js")(app);
+require("./app/routes/routes.js")(app);
+// require("./app/routes/item.routes.js")(app2);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
