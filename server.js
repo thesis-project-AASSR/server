@@ -10,6 +10,16 @@ const dotenv = require('dotenv');
 dotenv.config({ path: '../../.env' });
 const app = express();
 
+//validation
+const joi = require ('@hapi/joi');
+
+const signschema = joi.object({
+  username: joi.string().min(6).required(),
+  email: joi.string().required().email(),
+  password: joi.string().min(8).required()
+});
+
+
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
@@ -39,6 +49,12 @@ app.post("/signup", (req, res) => {
   //  if (username) {
   //    res.send({message: "user already exist"});
   //  } 
+
+  const {error} = signschema.validate(req.body);
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
+
   bcrypt.hash(password, saltRounds, (err, hash) => {
     
     if (err) {
@@ -47,7 +63,7 @@ app.post("/signup", (req, res) => {
     if (email) {
       db.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
         if (results.length > 0) {
-          res.send({message: "email already exist"});
+          res.status(402).send({message: "email already exist"});
         } else {
           db.query(
             "INSERT INTO users (username, email, password, phoneNumber, location, image, iBan ) VALUES (?,?,?,?,?,?,?)",
@@ -86,22 +102,21 @@ app.post("/signin", (req, res) => {
       if (response) {
            req.body.id = result[0].id
            //creates the token
-          const token = jwt.sign({id}, process.env.SECRET_TOKEN, {
-          expiresIn:1000,
-        })
+          const token = jwt.sign({id}, process.env.SECRET_TOKEN);
+        // res.send(token);
           //creates my session
         // req.session.user =  {auth:true,token: token, result: result}
         console.log("signed user: ", {token: token});
         res.json({auth:true, token: token, result: result});
         }
         else {
-        res.json({auth:false, message:'wrong password '});
+        res.status(402).json({auth:false, message:'email or password is incorrect'});
           }
         });
         }
         else {
-        res.json({auth:false, message:'no user'});
-       }
+          res.status(402).json({auth:false, message:'email or password is incorrect'});
+        }
        }
        );
         });

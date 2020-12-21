@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/Areenbadran/server#readme",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
