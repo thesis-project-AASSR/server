@@ -5,18 +5,18 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 const cors = require('cors');
-var fs = require('fs');
+const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config({ path: '../../.env' });
-
+const cors = require('cors');
 const app = express();
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
-
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.urlencoded({ extended: false }));
+
 
 //using CORS
 app.use(cors());
@@ -110,7 +110,8 @@ app.post("/signin", (req, res) => {
 
 
 
-require("./app/routes/user.routes.js")(app);
+require("./app/routes/routes.js")(app);
+// require("./app/routes/item.routes.js")(app2);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;

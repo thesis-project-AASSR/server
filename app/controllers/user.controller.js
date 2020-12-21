@@ -9,14 +9,12 @@ exports.create = (req, res) => {
       message: "Content can not be empty!"
     });
   }
-
   // Create a Customer
   const customer = new Customer({
     email: req.body.email,
     name: req.body.name,
     active: req.body.active
   });
-
   // Save Customer in the database
   Customer.create(customer, (err, data) => {
     if (err)
@@ -27,7 +25,6 @@ exports.create = (req, res) => {
     else res.send(data);
   });
 };
-
 // Retrieve all Customers from the database.
 exports.findAll = (req, res) => {
   Customer.getAll((err, data) => {
@@ -39,7 +36,6 @@ exports.findAll = (req, res) => {
     else res.send(data);
   });
 };
-
 // Find a single Customer with a customerId
 exports.findOne = (req, res) => {
   Customer.findById(req.params.customerId, (err, data) => {
@@ -56,7 +52,6 @@ exports.findOne = (req, res) => {
     } else res.send(data);
   });
 };
-
 // Update a Customer identified by the customerId in the request
 exports.update = (req, res) => {
   // Validate Request
@@ -65,9 +60,7 @@ exports.update = (req, res) => {
       message: "Content can not be empty!"
     });
   }
-
   console.log(req.body);
-
   Customer.updateById(
     req.params.customerId,
     new Customer(req.body),
@@ -86,7 +79,6 @@ exports.update = (req, res) => {
     }
   );
 };
-
 // Delete a Customer with the specified customerId in the request
 exports.delete = (req, res) => {
   Customer.remove(req.params.customerId, (err, data) => {
@@ -103,7 +95,6 @@ exports.delete = (req, res) => {
     } else res.send({ message: `Customer was deleted successfully!` });
   });
 };
-
 // Delete all Customers from the database.
 exports.deleteAll = (req, res) => {
   Customer.removeAll((err, data) => {
@@ -116,11 +107,9 @@ exports.deleteAll = (req, res) => {
   });
 };
 */
-
-exports.now = (req, res) => {
-  res.send({message: "hiiii"})
-}
-
+// exports.now = (req, res) => {
+//   res.send({message: "hiiii"})
+// }
 //create and save new user
 // exports.create = (req, res) => {
 //   if (!req.body) {
@@ -128,7 +117,6 @@ exports.now = (req, res) => {
 //       message: "Content can not be empty!"
 //     });
 //   }
-
 //   // Create a Customer
 //   const user = new User({
 //     username: req.body.username,
@@ -139,7 +127,6 @@ exports.now = (req, res) => {
 //     image: req.body.image,
 //     iBan: req.body.iBan
 //   });
-
 //   // Save Customer in the database
 // User.create(user, (err, data) => {
 //     if (err)
@@ -150,33 +137,3 @@ exports.now = (req, res) => {
 //     else res.send(data);
 //   });
 // };
-
-// exports.check = (req, res) => {
-//   const info = {
-//     username: req.body.username,
-//     password: req.body.password
-//   };
-//   if (info.username && info.password) {
-//     User.check(info ,(err, data) => {
-//       if (err)
-//         res.status(500).send({
-//           message:
-//             err.message || "Some error occurred while retrieving customers."
-//         }); 
-//     });
-//   } 
-//   };
-
-/*
-{
-    "username": "areenbadran",
-    "email": "areenbadran9@gmail.com",
-    "password": "areenwow1234",
-    "phoneNumber": "0775498673",
-    "location": "12454",
-    "image": "url146416454",
-    "iBan": "skskss"
-}
-*/
-
-
