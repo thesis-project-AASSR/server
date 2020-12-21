@@ -8,7 +8,6 @@ const cors = require('cors');
 const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config({ path: '../../.env' });
-const cors = require('cors');
 const app = express();
 
 // parse requests of content-type - application/json
