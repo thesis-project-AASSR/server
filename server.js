@@ -50,10 +50,10 @@ app.post("/signup", (req, res) => {
   //    res.send({message: "user already exist"});
   //  } 
 
-  const {error} = signschema.validate(req.body);
-  if (error) {
-    return res.status(400).send(error.details[0].message);
-  }
+  // const {error} = signschema.validate(req.body);
+  // if (error) {
+  //   return res.status(400).send(error.details[0].message);
+  // }
 
   bcrypt.hash(password, saltRounds, (err, hash) => {
     
@@ -100,7 +100,7 @@ app.post("/signin", (req, res) => {
        //check the bycrypted password
       bcrypt.compare(password, result[0].password, (error, response) => {
       if (response) {
-           req.body.id = result[0].id
+           req.body.id = result[0].id //comment this
            //creates the token
           const token = jwt.sign({id}, process.env.SECRET_TOKEN);
         // res.send(token);
