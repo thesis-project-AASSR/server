@@ -4,6 +4,7 @@ const db = require("./app/models/db");
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
+const cors = require('cors');
 var fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config({ path: '../../.env' });
@@ -16,6 +17,10 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.urlencoded({ extended: false }));
+
+//using CORS
+app.use(cors());
+
 
 // simple route
 app.get("/", (req, res) => {
@@ -87,6 +92,7 @@ app.post("/signin", (req, res) => {
         })
           //creates my session
         // req.session.user =  {auth:true,token: token, result: result}
+        console.log("signed user: ", {token: token});
         res.json({auth:true, token: token, result: result});
         }
         else {

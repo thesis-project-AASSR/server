@@ -2,7 +2,7 @@ module.exports = app => {
   const controller = require("../controllers/user.controller.js");
 
 
-  app.get("/see", controller.now);
+  // app.get("/see", controller.now);
 
 
   // Create a new User (Signup)
