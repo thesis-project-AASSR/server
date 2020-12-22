@@ -20,10 +20,10 @@ const Item = function(item) {
 Item.addItem = (newItem, result) => {
   var mySql = `INSERT INTO items
         (
-            category, quantity, description, weight, image, price 
+            category, quantity, description, weight, image, price ,user_id
         )
         VALUES
-         (?,?,?,?,?,? )`;
+         (?,?,?,?,?,?,1 )`;
          sql.query(mySql,
             [
               newItem.category,
@@ -52,7 +52,7 @@ Item.getAll = result => {
       result(null, err);
       return;
     }
-    console.log("customers: ", res);
+   
     result(null, res);
   });
 };

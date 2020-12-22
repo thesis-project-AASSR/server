@@ -13,7 +13,7 @@ module.exports = app => {
 
   app.get("/ItemsList", controller.findAll);   // this url it the same as api in front end 
 
-
+  app.get("/AdminUser", controller.findUser);
 
   // app.get("/see", controller.now);
 

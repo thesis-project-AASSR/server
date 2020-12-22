@@ -18,8 +18,18 @@ const User = function(user) {
 
 //==========================================================================
 
-
-
+User.getAll = result => {
+  sql.query("SELECT * FROM users WHERE userID = 1", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+   
+    result(null, res);
+    console.log(result)
+  });
+};
 
 
 
