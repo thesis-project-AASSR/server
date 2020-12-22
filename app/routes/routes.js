@@ -10,6 +10,7 @@ module.exports = app => {
   // Update a items with itemsId
 
   app.put("/items/:id", controller.updateitems);
+  app.delete("/delete/:id", controller.deleteItem);
 
   app.get("/ItemsList", controller.findAll);   // this url it the same as api in front end 
 
