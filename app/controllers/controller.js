@@ -5,12 +5,13 @@ const Item = require("../models/item.model.js");
 //add items to our database 
 exports.addItem = (req, res) => {
   // Validate request
+
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
   }
-  console.log(".......",req.body);   //the object (data) which we get from front end
+  console.log(".......",req.body);   //the object (data) which we get from front end     having id 
   // items send by the front end 
   const item = ({
        category: req.body.category,
@@ -23,13 +24,14 @@ exports.addItem = (req, res) => {
 
   // Save Customer in the database
   Item.addItem(item, (err, data) => {
+    console.log(item)
     if (err)
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the Item."
       });
     else res.send(data);
-    // console.log("data:",data)
+    console.log("data:",data)
   });
 };
 
@@ -37,6 +39,7 @@ exports.addItem = (req, res) => {
 // Update a items identified by the itemsId in the request
 exports.updateitems = (req, res) => {
   // Validate Request
+  console.log(req.body)
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!"
@@ -74,5 +77,24 @@ exports.findAll = (req, res) => {
           err.message || "Some error occurred while retrieving customers."
       });
     else res.send(data);
+  });
+};
+
+
+
+// Delete a specific item from the database
+exports.deleteItem = (req, res) => {
+  Item.remove(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Item with id ${req.params.itemId}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not delete Item with id " + req.params.itemId
+        });
+      }
+    } else res.send({ message: `Item was deleted successfully!` });
   });
 };
