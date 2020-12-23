@@ -60,7 +60,10 @@ app.post("/signup", (req, res) => {
     if (err) {
       console.log(err);
     }
-    if (email) {
+    if (!username || !email || !password || !phoneNumber || !location || !image ) {
+      res.status(400).json({message: "please enter username"})
+    }
+    else if (email) {
       db.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
         if (results.length > 0) {
           res.status(402).send({message: "email already exist"});
@@ -110,12 +113,12 @@ app.post("/signin", (req, res) => {
         res.json({auth:true, token: token, result: result});
         }
         else {
-        res.status(402).json({auth:false, message:'email or password is incorrect'});
+        res.status(401).json({auth:false, message:'password is incorrect'});
           }
         });
         }
         else {
-          res.status(402).json({auth:false, message:'email or password is incorrect'});
+          res.status(401).json({auth:false, message:'email is empty'});
         }
        }
        );
