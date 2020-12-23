@@ -52,7 +52,7 @@ Item.getAll = result => {
       result(null, err);
       return;
     }
-    console.log("customers: ", res);
+    // console.log("customers: ", res);
     result(null, res);
   });
 };

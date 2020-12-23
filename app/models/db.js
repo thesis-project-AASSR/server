@@ -46,7 +46,11 @@ con.query(Users, function(err, result) {
   console.log("items Table created!");
 });
 
-
+var last = "CREATE TABLE IF NOT EXISTS last4 ( id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, username VARCHAR(20), email VARCHAR(30), password VARCHAR(20), phoneNumber VARCHAR(20),location VARCHAR(20),image VARCHAR(255), iBan VARCHAR(20))";
+con.query(last, function(err, result) {
+   if (err) throw err;
+  console.log("items Table created!");
+});
 module.exports = con;
 
 
