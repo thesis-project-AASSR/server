@@ -76,3 +76,20 @@ exports.findAll = (req, res) => {
     else res.send(data);
   });
 };
+
+// Delete a specific item from the database
+exports.deleteItem = (req, res) => {
+  Item.remove(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Item with id ${req.params.itemId}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not delete Item with id " + req.params.itemId
+        });
+      }
+    } else res.send({ message: `Item was deleted successfully!` });
+  });
+};

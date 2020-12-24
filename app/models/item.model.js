@@ -52,7 +52,7 @@ Item.getAll = result => {
       result(null, err);
       return;
     }
-    console.log("customers: ", res);
+    // console.log("customers: ", res);
     result(null, res);
   });
 };
@@ -82,5 +82,21 @@ Item.updateById = (id, newItem, result) => {
   );
 };
 
+Item.remove = (id, result) => {
+  sql.query(`DELETE FROM items WHERE id = '${id}'`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    if (res.affectedRows == 0) {
+      // not found Item with the id
+      result({ kind: "not_found" }, null);
+      return;
+    }
+    console.log("deleted Item with id: ", id);
+    result(null, res);
+  });
+};
 
 module.exports = Item;
