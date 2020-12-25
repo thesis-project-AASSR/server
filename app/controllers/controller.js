@@ -18,7 +18,8 @@ exports.addItem = (req, res) => {
       description: req.body.description,
       weight: req.body.weight,
       image: req.body.image,
-      price: req.body.price
+      price: req.body.price,
+      user_id:req.body.user_id
   });
 
   // Save Customer in the database
@@ -35,8 +36,47 @@ exports.addItem = (req, res) => {
 
 
 // Update a items identified by the itemsId in the request
+
+
+//retrieve all the items in our database
+exports.findAll = (req, res) => {
+  Item.getAll((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving customers."
+      });
+    else res.send(data);
+  });
+};
+
+
+exports.findAdmin = (req, res) => {
+  User.getAdmin((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving customers."
+      });
+    else res.send(data);
+  });
+};
+
+exports.findUser = (req, res) => {
+  User.GetUser((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving customers."
+      });
+    else res.send(data);
+  });
+};
+
+
 exports.updateitems = (req, res) => {
   // Validate Request
+  console.log(req.body)
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!"
@@ -65,17 +105,7 @@ exports.updateitems = (req, res) => {
   );
 };
 
-//retrieve all the items in our database
-exports.findAll = (req, res) => {
-  Item.getAll((err, data) => {
-    if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving customers."
-      });
-    else res.send(data);
-  });
-};
+
 
 // Delete a specific item from the database
 exports.deleteItem = (req, res) => {

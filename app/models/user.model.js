@@ -17,9 +17,34 @@ const User = function(user) {
 // Now you need to create the tables (users,items) using terminal/mysql workbench
 
 //==========================================================================
+//getting the admin
+User.getAdmin = result => {
+  sql.query("SELECT * FROM users WHERE userID = 1", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+   
+    result(null, res);
+    console.log(result)
+  });
+};
 
 
-
+//getting the user profile 
+User.GetUser = result => {
+  sql.query("SELECT * FROM users", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+   
+    result(null, res);
+    console.log(result)
+  });
+};
 
 
 

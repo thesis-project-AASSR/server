@@ -9,19 +9,21 @@ const dotenv = require('dotenv');
 dotenv.config({ path: '../../.env' });
 var cors = require('cors')
 const app = express();
+
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors())
+
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "welcome to our deployed app." });
 });
+
 //authentication 
 app.post("/signup", (req, res) => {
-  console.log("req.body:",req.body)
   const username =  req.body.username;
   const email = req.body.email;
   const password = req.body.password;
@@ -32,18 +34,17 @@ app.post("/signup", (req, res) => {
  //  if (username) {
  //    res.send({message: "user already exist"});
  //  } 
- console.log("image2:",image)
  bcrypt.hash(password, saltRounds, (err, hash) => {
    if (err) {
-     console.log("ERROOOR:",err);
+     console.log(err);
    }
    if (email) {
-     db.query('SELECT * FROM last3 WHERE email = ?', [email], (error, results) => {
+     db.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
        if (results.length > 0) {
          res.status(402).send({message: "email already exist"});
        } else {
          db.query(
-           "INSERT INTO last3 (username, email, password, phoneNumber, location, image, iBan ) VALUES (?,?,?,?,?,?,?)",
+           "INSERT INTO users (username, email, password, phoneNumber, location, image, iBan ) VALUES (?,?,?,?,?,?,?)",
            [username, email, hash, phoneNumber, location, image, iBan],
            (err, result) => {
              if (err) {
@@ -51,7 +52,6 @@ app.post("/signup", (req, res) => {
              } else {
                console.log(result);
              }
-             console.log("image:",image)
              console.log("created user: ", { username: username });
              // console.log(result);
              // result(null, { username: res.username });
@@ -63,6 +63,7 @@ app.post("/signup", (req, res) => {
    }
  });
 });
+
 app.post("/signin", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -96,10 +97,14 @@ app.post("/signin", (req, res) => {
        }
        );
         });
+
+
+
 require("./app/routes/routes.js")(app);
 // require("./app/routes/item.routes.js")(app2);
+
 // set port, listen for requests
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
