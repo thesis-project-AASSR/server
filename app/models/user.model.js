@@ -12,6 +12,17 @@ const User = function(user) {
   this.iBan = user.iBan; //bank account ==> not required to fill it now
 };
 
+User.getAll = result => {
+  sql.query("SELECT * FROM users", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    console.log("customers: ", res);
+    result(null, res);
+  });
+};
 
 //==========================================================================
 // Now you need to create the tables (users,items) using terminal/mysql workbench

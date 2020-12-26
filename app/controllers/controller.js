@@ -76,3 +76,14 @@ exports.findAll = (req, res) => {
     else res.send(data);
   });
 };
+
+exports.findUser = (req, res) => {
+  User.getAll((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving customers."
+      });
+    else res.send(data);
+  });
+};

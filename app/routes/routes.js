@@ -2,7 +2,7 @@ module.exports = app => {
   const controller = require("../controllers/controller.js");
   
   app.post("/items", controller.addItem);
-  app.get("/ItemsList", controller.findAll);
+  // app.get("/ItemsList", controller.findAll);
 
 
 
@@ -15,7 +15,7 @@ module.exports = app => {
 
   app.get("/ItemsList", controller.findAll);   // this url it the same as api in front end 
 
-
+  app.get("/AdminUser", controller.findUser);
 
 
   // app.get("/see", controller.now);

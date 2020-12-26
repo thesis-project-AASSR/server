@@ -4,20 +4,20 @@ const db = require("./app/models/db");
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
-const cors = require('cors');
 const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config({ path: '../../.env' });
+const cors = require('cors');
 const app = express();
 
 //validation
-const joi = require ('@hapi/joi');
+// const joi = require ('@hapi/joi');
 
-const signschema = joi.object({
-  username: joi.string().min(6).required(),
-  email: joi.string().required().email(),
-  password: joi.string().min(8).required()
-});
+// const signschema = joi.object({
+//   username: joi.string().min(6).required(),
+//   email: joi.string().required().email(),
+//   password: joi.string().min(8).required()
+// });
 
 
 // parse requests of content-type - application/json
@@ -25,7 +25,6 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.urlencoded({ extended: false }));
-
 
 //using CORS
 app.use(cors());
@@ -107,8 +106,6 @@ app.post("/signin", (req, res) => {
            //creates the token
           const token = jwt.sign({id}, process.env.SECRET_TOKEN);
         // res.send(token);
-          //creates my session
-        // req.session.user =  {auth:true,token: token, result: result}
         console.log("signed user: ", {token: token});
         res.json({auth:true, token: token, result: result});
         }
