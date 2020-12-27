@@ -65,8 +65,8 @@ Item.getAll = result => {
 Item.updateById = (id, newItem, result) => {
 
   sql.query(
-    "UPDATE items SET category = ?, quantity = ?, description = ?, weight = ? WHERE itemID = ?",
-    [newItem.category, newItem.quantity, newItem.description,newItem.weight,id],
+    "UPDATE items SET category = ?, quantity = ?, description = ?, weight = ? ,price = ? WHERE itemID = ?",
+    [newItem.category, newItem.quantity, newItem.description,newItem.weight,newItem.price,id],
     (err, res) => {
   
       if (err) {
@@ -84,8 +84,8 @@ Item.updateById = (id, newItem, result) => {
       result(null, { id: id, ...newItem });
       console.log(id,"id")
     }
-  );
-};
+  )
+}
 
 
 Item.remove = (id, result) => {
