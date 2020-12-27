@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 });
 
 //authentication 
-app.post("https://backend-dawerha.herokuapp.com/signup", (req, res) => {
+app.post("/signup", (req, res) => {
   const username =  req.body.username;
   const email = req.body.email;
   const password = req.body.password;
@@ -64,7 +64,7 @@ app.post("https://backend-dawerha.herokuapp.com/signup", (req, res) => {
  });
 });
 
-app.post("https://backend-dawerha.herokuapp.com/signin", (req, res) => {
+app.post("/signin", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const id = req.body.id;
@@ -110,7 +110,7 @@ let clientSecret = "EOMfECpVcAbevWtpRnjzxhC4fMgnk39YT4rp4fV3V8CT8ZO11-2O56z1pAK_
 let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret);
 let client = new paypal.core.PayPalHttpClient(environment);
 
-app.post("https://backend-dawerha.herokuapp.com/purchase", (req, res) => {
+app.post("/purchase", (req, res) => {
     itemsInfo = {}
   console.log("req.body:",req.body)
  
