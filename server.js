@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors())
 
 // simple route
-app.get("https://backend-dawerha.herokuapp.com", (req, res) => {
+app.get("/", (req, res) => {
   res.json({ message: "welcome to our deployed app." });
 });
 
