@@ -33,6 +33,43 @@ exports.addItem = (req, res) => {
   });
 };
 
+// Update a items identified by the itemsId in the request
+
+
+//retrieve all the items in our database
+exports.findAll = (req, res) => {
+  Item.getAll((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving customers."
+      });
+    else res.send(data);
+  });
+};
+
+exports.findAdmin = (req, res) => {
+  User.getAdmin((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving customers."
+      });
+    else res.send(data);
+  });
+};
+
+
+exports.findUser = (req, res) => {
+  User.GetUser((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving customers."
+      });
+    else res.send(data);
+  });
+};
 
 // Update a items identified by the itemsId in the request
 exports.updateitems = (req, res) => {
@@ -65,25 +102,20 @@ exports.updateitems = (req, res) => {
   );
 };
 
-//retrieve all the items in our database
-exports.findAll = (req, res) => {
-  Item.getAll((err, data) => {
-    if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving customers."
-      });
-    else res.send(data);
-  });
-};
 
-exports.findUser = (req, res) => {
-  User.getAll((err, data) => {
-    if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving customers."
-      });
-    else res.send(data);
+// Delete a specific item from the database
+exports.deleteItem = (req, res) => {
+  Item.remove(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Item with id ${req.params.itemId}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not delete Item with id " + req.params.itemId
+        });
+      }
+    } else res.send({ message: `Item was deleted successfully!` });
   });
 };
