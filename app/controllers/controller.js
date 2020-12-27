@@ -133,7 +133,9 @@ exports.actions = (req, res) => {
   // items send by the front end 
   const item = ({
     itemId: req.body.itemId,
-    status: req.body.status
+    status: req.body.status,
+    acceptationStat:req.body.acceptationStat,
+    rejectionStat:req.body.rejectionStat
   });
 
   // Save Sataus in the database

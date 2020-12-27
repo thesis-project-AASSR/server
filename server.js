@@ -113,9 +113,21 @@ let client = new paypal.core.PayPalHttpClient(environment);
 app.post("/purchase", (req, res) => {
     itemsInfo = {}
   console.log("req.body:",req.body)
- 
-   
-  var mySql1 = `SELECT price,id FROM items WHERE id = '${req.body.itemId}' `;
+ data ={
+   itemId:req.body.itemId,
+  acceptationStat: req.body.acceptationStat,
+  rejectionStat: req.body.rejectionStat,
+  status:req.body.status
+}
+
+var mySql = `UPDATE items SET status = '${data.status}',acceptationStat = ${data.acceptationStat}, rejectionStat = ${data.rejectionStat} WHERE id = '${data.itemId}'`;
+db.query(mySql,(err, res) => {
+         if (err) 
+           console.log("error: ", err);
+  
+         })
+        
+  var mySql1 = `SELECT price,id FROM items WHERE id = '${data.itemId}' `;
   db.query(mySql1, (err, results) => {
     itemsInfo.price=results[0].price
     itemsInfo.userId=results[0].id
@@ -153,7 +165,7 @@ app.post("/purchase", (req, res) => {
       },
       "receiver": itemsInfo.receiver,
       // "receiver": "razan.tashman@yahoo.com",
-      "sender_item_id": req.body.itemId
+      "sender_item_id": data.itemId
       // "sender_item_id": 45
     }]
   }

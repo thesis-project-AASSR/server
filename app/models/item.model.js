@@ -107,7 +107,7 @@ Item.remove = (id, result) => {
 };
 
 Item.actions = (actionsInfo, result) => {
-  var mySql = `UPDATE items SET status = '${actionsInfo.status}' WHERE id = '${actionsInfo.itemId}'`;
+  var mySql = `UPDATE items SET status = '${actionsInfo.status}',acceptationStat = ${actionsInfo.acceptationStat}, rejectionStat = ${actionsInfo.rejectionStat} WHERE id = '${actionsInfo.itemId}'`;
          sql.query(mySql,(err, res) => {
                   if (err) {
                     console.log("error: ", err);
