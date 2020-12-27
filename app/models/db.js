@@ -40,17 +40,19 @@ setInterval(function() {
 }, 5000);
   console.log("MySQL Connected!!!");
 //fields of users table - users TABLE
-var Users = "CREATE TABLE IF NOT EXISTS items ( id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, category VARCHAR(20), quantity VARCHAR(30), description VARCHAR(255),weight INT, image TEXT ,price INT)";
+var Users = "CREATE TABLE IF NOT EXISTS items ( id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, category VARCHAR(20), quantity VARCHAR(30), description VARCHAR(255),weight INT, image TEXT ,price INT, status VARCHAR(255) )";
 con.query(Users, function(err, result) {
    if (err) throw err;
   console.log("items Table created!");
 });
 
-var last = "CREATE TABLE IF NOT EXISTS last4 ( id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, username VARCHAR(20), email VARCHAR(30), password VARCHAR(20), phoneNumber VARCHAR(20),location VARCHAR(20),image VARCHAR(255), iBan VARCHAR(20))";
+var last = "CREATE TABLE IF NOT EXISTS user ( id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, username VARCHAR(255), email VARCHAR(255), password VARCHAR(255), phoneNumber VARCHAR(255),location VARCHAR(255),image VARCHAR(255), iBan VARCHAR(255))";
 con.query(last, function(err, result) {
    if (err) throw err;
   console.log("items Table created!");
 });
 module.exports = con;
+
+
 
 

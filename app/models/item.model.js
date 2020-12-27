@@ -9,6 +9,7 @@ const Item = function(item) {
   this.description = item.description;
   this.image = item.image;
   this.price = item.price;
+  this.user_id = item.user_id
   //this.foreign key = user.id;
 };
 
@@ -20,10 +21,10 @@ const Item = function(item) {
 Item.addItem = (newItem, result) => {
   var mySql = `INSERT INTO items
         (
-            category, quantity, description, weight, image, price 
+            category, quantity, description, weight, image, price ,user_id,status
         )
         VALUES
-         (?,?,?,?,?,? )`;
+         (?,?,?,?,?,?,? )`;
          sql.query(mySql,
             [
               newItem.category,
@@ -32,6 +33,8 @@ Item.addItem = (newItem, result) => {
               newItem.weight,
               newItem.image,
               newItem.price,
+              newItem.user_id,
+              newItem.status
             ],(err, res) => {
                   if (err) {
                     console.log("error: ", err);
@@ -52,7 +55,7 @@ Item.getAll = result => {
       result(null, err);
       return;
     }
-    // console.log("customers: ", res);
+   
     result(null, res);
   });
 };
@@ -61,10 +64,12 @@ Item.getAll = result => {
 
 // updating the items in our database
 Item.updateById = (id, newItem, result) => {
+
   sql.query(
-    "UPDATE items SET category = ?, quantity = ?, description = ?, weight = ?, image = ?,price =? WHERE id = ?",
-    [newItem.category, newItem.quantity, newItem.description,newItem.weight,newItem.image,newItem.price,id],
+    "UPDATE items SET category = ?, quantity = ?, description = ?, weight = ? WHERE itemID = ?",
+    [newItem.category, newItem.quantity, newItem.description,newItem.weight,id],
     (err, res) => {
+  
       if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -78,12 +83,14 @@ Item.updateById = (id, newItem, result) => {
 
       console.log("updated customer: ", { id: id, ...newItem });
       result(null, { id: id, ...newItem });
+      console.log(id,"id")
     }
   );
 };
 
+
 Item.remove = (id, result) => {
-  sql.query(`DELETE FROM items WHERE id = '${id}'`, (err, res) => {
+  sql.query(`DELETE FROM items WHERE itemID = '${id}'`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -98,5 +105,20 @@ Item.remove = (id, result) => {
     result(null, res);
   });
 };
+
+Item.actions = (actionsInfo, result) => {
+  var mySql = `UPDATE items SET status = '${actionsInfo.status}' WHERE id = '${actionsInfo.itemId}'`;
+         sql.query(mySql,(err, res) => {
+                  if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                    return;
+                  }
+        console.log("created item: ", { id: res.insertId, ...actionsInfo });
+            result(null, { id: res.insertId, ...actionsInfo });
+          });
+};
+
+
 
 module.exports = Item;

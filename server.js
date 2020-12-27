@@ -8,22 +8,22 @@ var fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config({ path: '../../.env' });
 var cors = require('cors')
-const paypal = require('@paypal/payouts-sdk');
 const app = express();
-
+const paypal = require('@paypal/payouts-sdk');
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors())
+
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "welcome to our deployed app." });
 });
+
 //authentication 
 app.post("/signup", (req, res) => {
-  console.log("req.body:",req.body)
   const username =  req.body.username;
   const email = req.body.email;
   const password = req.body.password;
@@ -34,26 +34,24 @@ app.post("/signup", (req, res) => {
  //  if (username) {
  //    res.send({message: "user already exist"});
  //  } 
- console.log("image2:",image)
  bcrypt.hash(password, saltRounds, (err, hash) => {
    if (err) {
-     console.log("ERROOOR:",err);
+     console.log(err);
    }
    if (email) {
-     db.query('SELECT * FROM last3 WHERE email = ?', [email], (error, results) => {
+     db.query('SELECT * FROM user WHERE email = ?', [email], (error, results) => {
        if (results.length > 0) {
          res.status(402).send({message: "email already exist"});
        } else {
          db.query(
-           "INSERT INTO last3 (username, email, password, phoneNumber, location, image, iBan ) VALUES (?,?,?,?,?,?,?)",
-           [username, email, hash, phoneNumber, location, image, iBan],
+           "INSERT INTO user (username, email, password, phoneNumber, location, image ) VALUES (?,?,?,?,?,?)",
+           [username, email, hash, phoneNumber, location, image],
            (err, result) => {
              if (err) {
                console.log("error: ", err);
              } else {
                console.log(result);
              }
-             console.log("image:",image)
              console.log("created user: ", { username: username });
              // console.log(result);
              // result(null, { username: res.username });
@@ -65,6 +63,7 @@ app.post("/signup", (req, res) => {
    }
  });
 });
+
 app.post("/signin", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -98,9 +97,11 @@ app.post("/signin", (req, res) => {
        }
        );
         });
+
+
+
 require("./app/routes/routes.js")(app);
 // require("./app/routes/item.routes.js")(app2);
-// set port, listen for requests
 
 
 
@@ -113,21 +114,23 @@ app.post("/purchase", (req, res) => {
     itemsInfo = {}
   console.log("req.body:",req.body)
  
-  // var mySql1 = `SELECT price FROM items WHERE id = '${req.body.sender_item_id}' `;
-  // db.query(mySql1, (err, results) => {
-  //   itemsInfo.price=results[0].price
-  //     console.log("results:",results);
-  //     console.log("results[0]:",results[0]);
-  //     console.log("itemsInfo::::::::::",itemsInfo);
+   
+  var mySql1 = `SELECT price,id FROM items WHERE id = '${req.body.itemId}' `;
+  db.query(mySql1, (err, results) => {
+    itemsInfo.price=results[0].price
+    itemsInfo.userId=results[0].id
+      console.log("results:",results);
+      console.log("results[0]:",results[0]);
+      console.log("itemsInfo::::::::::",itemsInfo);
       
-  //     // itemsInfo.userId=results[0].userId
+      // itemsInfo.userId=results[0].userId
   // });
   // console.log("itemsInfo:",itemsInfo);
-  // let mySql2 = `SELECT email FROM users WHERE id = '${itemsInfo.userId}' `;
-  // db.query(mySql2, (err, results) => {
-  //     itemsInfo.receiver=results[0].email
-  //     console.log("itemsInfo:",itemsInfo);
-  // });
+  let mySql2 = `SELECT email FROM users WHERE id = ${itemsInfo.userId} `;
+  db.query(mySql2, (err, results) => {
+      itemsInfo.receiver=results[0].email
+      console.log("itemsInfo:",itemsInfo);
+  });
 
   console.log("itemsInfo:",itemsInfo);
   var requestBody = {
@@ -148,12 +151,13 @@ app.post("/purchase", (req, res) => {
         "value": req.body.price
         // "value": itemsInfo.price
       },
-      // "receiver": itemsInfo.receiver,
-      "receiver": "razan.tashman@yahoo.com",
-      "sender_item_id": req.body.sender_item_id
+      "receiver": itemsInfo.receiver,
+      // "receiver": "razan.tashman@yahoo.com",
+      "sender_item_id": req.body.itemId
       // "sender_item_id": 45
     }]
   }
+
   // Construct a request object and set desired parameters 
 // Here, PayoutsPostRequest() creates a POST request to /v1/payments/payouts
 let request = new paypal.payouts.PayoutsPostRequest();
@@ -167,11 +171,24 @@ request.requestBody(requestBody);
    console.log(`Payouts Create Response: ${JSON.stringify(response.result)}`);
    res.send(response)
 }
+
 createPayouts();
 })
+});
 
 
-const PORT = process.env.PORT || 4000;
+
+
+
+
+
+
+
+
+
+
+// set port, listen for requests
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
