@@ -19,10 +19,12 @@ module.exports = app => {
 //find the user
 app.get("/UserProfile", controller.findUser);
  
+
 //update users
 app.put("/UsersUpdate/:id", controller.updateUsers);
 
   
+
 
 };
 

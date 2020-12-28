@@ -122,6 +122,7 @@ exports.deleteItem = (req, res) => {
       }
     } else res.send({ message: `Item was deleted successfully!` });
   });
+
 };
 
 
@@ -157,4 +158,5 @@ exports.updateUsers = (req, res) => {
       } else res.send(data);
     }
   );
+
 };
