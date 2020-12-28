@@ -65,8 +65,10 @@ Item.getAll = result => {
 Item.updateById = (id, newItem, result) => {
 
   sql.query(
-    "UPDATE items SET category = ?, quantity = ?, description = ?, weight = ? WHERE itemID = ?",
-    [newItem.category, newItem.quantity, newItem.description,newItem.weight,id],
+
+    "UPDATE items SET category = ?, quantity = ?, description = ?, weight = ? ,price = ? WHERE itemID = ?",
+    [newItem.category, newItem.quantity, newItem.description,newItem.weight,newItem.price,id],
+
     (err, res) => {
   
       if (err) {
@@ -83,8 +85,28 @@ Item.updateById = (id, newItem, result) => {
       console.log("updated customer: ", { id: id, ...newItem });
       result(null, { id: id, ...newItem });
       console.log(id,"id")
+
     }
-  );
+  )
+}
+
+
+Item.remove = (id, result) => {
+  sql.query(`DELETE FROM items WHERE itemID = '${id}'`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    if (res.affectedRows == 0) {
+      // not found Item with the id
+      result({ kind: "not_found" }, null);
+      return;
+
+    }
+    console.log("deleted Item with id: ", id);
+    result(null, res);
+  });
 };
 
 
