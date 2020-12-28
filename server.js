@@ -39,13 +39,13 @@ app.post("/signup", (req, res) => {
      console.log(err);
    }
    if (email) {
-     db.query('SELECT * FROM user WHERE email = ?', [email], (error, results) => {
+     db.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
        if (results.length > 0) {
          res.status(402).send({message: "email already exist"});
        } else {
          db.query(
-           "INSERT INTO user (username, email, password, phoneNumber, location, image ) VALUES (?,?,?,?,?,?)",
-           [username, email, hash, phoneNumber, location, image],
+           "INSERT INTO users (username, email, password, phoneNumber, location, image, iBan ) VALUES (?,?,?,?,?,?,?)",
+           [username, email, hash, phoneNumber, location, image, iBan],
            (err, result) => {
              if (err) {
                console.log("error: ", err);
@@ -200,7 +200,7 @@ createPayouts();
 
 
 // set port, listen for requests
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

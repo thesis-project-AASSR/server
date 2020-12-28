@@ -150,3 +150,41 @@ exports.actions = (req, res) => {
   });
 };
 
+
+
+
+
+/// update users and admin 
+exports.updateUsers = (req, res) => {
+  // Validate Request
+  console.log(req.body)
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+
+  console.log('User',req.body);
+
+ User.updateById(
+    req.params.id,
+    new User(req.body),
+    console.log(req.body),
+    
+    (err, data) => {
+      console.log("id", req.params.id)
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found Customer with id ${req.params.id}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating Customer with id " + req.params.id
+          });
+        }
+      } else res.send(data);
+    }
+  );
+
+};

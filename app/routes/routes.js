@@ -21,33 +21,15 @@ app.get("/UserProfile", controller.findUser);
 
 // accept and delete items from admin side 
 app.post("/actions", controller.actions);
+ 
 
-  // app.get("/see", controller.now);
+//update users
+app.put("/UsersUpdate/:id", controller.updateUsers);
 
+  
 
-  // Create a new User (Signup)
-  // app.post("/signup", controller.create);
-
-  // Login
-  // app.post("/login", controller.check);
-
-  // Retrieve all Customers
-  // app.get("/customers", customers.findAll);
-
-  // Retrieve a single Customer with customerId
-  // app.get("/customers/:customerId", customers.findOne);
-
-  // Update a Customer with customerId
-  // app.put("/customers/:customerId", customers.update);
-
-  // Delete a Customer with customerId
-  // app.delete("/customers/:customerId", customers.delete);
-
-  // Create a new Customer
-  // app.delete("/customers", customers.deleteAll);
 
 };
 
 
 
-// app.get("/items", customers.retrieveItems);
