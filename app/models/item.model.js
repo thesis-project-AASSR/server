@@ -24,7 +24,7 @@ Item.addItem = (newItem, result) => {
             category, quantity, description, weight, image, price ,user_id,status
         )
         VALUES
-         (?,?,?,?,?,?,? )`;
+         (?,?,?,?,?,?,?,Pending )`;
          sql.query(mySql,
             [
               newItem.category,
