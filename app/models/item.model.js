@@ -21,10 +21,10 @@ const Item = function(item) {
 Item.addItem = (newItem, result) => {
   var mySql = `INSERT INTO items
         (
-            category, quantity, description, weight, image, price ,user_id
+            category, quantity, description, weight, image, price ,user_id,status
         )
         VALUES
-         (?,?,?,?,?,?,? )`;
+         (?,?,?,?,?,?,?,Pending )`;
          sql.query(mySql,
             [
               newItem.category,
@@ -33,7 +33,8 @@ Item.addItem = (newItem, result) => {
               newItem.weight,
               newItem.image,
               newItem.price,
-              newItem.user_id
+              newItem.user_id,
+              newItem.status
             ],(err, res) => {
                   if (err) {
                     console.log("error: ", err);
@@ -126,6 +127,20 @@ Item.remove = (id, result) => {
     result(null, res);
   });
 };
+
+Item.actions = (actionsInfo, result) => {
+  var mySql = `UPDATE items SET status = '${actionsInfo.status}',acceptationStat = ${actionsInfo.acceptationStat}, rejectionStat = ${actionsInfo.rejectionStat} WHERE id = '${actionsInfo.itemId}'`;
+         sql.query(mySql,(err, res) => {
+                  if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                    return;
+                  }
+        console.log("created item: ", { id: res.insertId, ...actionsInfo });
+            result(null, { id: res.insertId, ...actionsInfo });
+          });
+};
+
 
 
 module.exports = Item;

@@ -18,6 +18,9 @@ module.exports = app => {
 
 //find the user
 app.get("/UserProfile", controller.findUser);
+
+// accept and delete items from admin side 
+app.post("/actions", controller.actions);
  
 
 //update users

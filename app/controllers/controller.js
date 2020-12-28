@@ -19,7 +19,9 @@ exports.addItem = (req, res) => {
       weight: req.body.weight,
       image: req.body.image,
       price: req.body.price,
-      user_id:req.body.user_id
+      user_id:req.body.user_id,
+      status:req.body.status
+      
   });
 
   // Save Customer in the database
@@ -122,8 +124,34 @@ exports.deleteItem = (req, res) => {
       }
     } else res.send({ message: `Item was deleted successfully!` });
   });
-
 };
+
+// accept and delete items from admin side 
+exports.actions = (req, res) => {
+  
+  console.log(".......",req.body);   //the object (data) which we get from front end
+  // items send by the front end 
+  const item = ({
+    itemId: req.body.itemId,
+    status: req.body.status,
+    acceptationStat:req.body.acceptationStat,
+    rejectionStat:req.body.rejectionStat
+  });
+
+  // Save Sataus in the database
+  Item.actions(item, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while adding the sataus."
+      });
+    else res.send(data);
+    // console.log("data:",data)
+  });
+};
+
+
+
 
 
 /// update users and admin 
