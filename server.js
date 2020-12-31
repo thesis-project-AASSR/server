@@ -10,8 +10,10 @@ dotenv.config({ path: '../../.env' });
 const cors = require('cors');
 const app = express();
 const paypal = require('@paypal/payouts-sdk');
+
 const { Expo } = require("expo-server-sdk");
 var nodemailer = require("nodemailer");
+
 //validation
 // const joi = require ('@hapi/joi');
 
@@ -138,8 +140,12 @@ app.post("/signin", (req, res) => {
            itemId:req.body.itemId,
           acceptationStat: req.body.acceptationStat,
           rejectionStat: req.body.rejectionStat,
+
           status:req.body.status,
           sender: req.body.sender
+
+          status:req.body.status
+
         }
         var mySql = `UPDATE items SET status = '${data.status}',acceptationStat = ${data.acceptationStat}, rejectionStat = ${data.rejectionStat} WHERE id = '${data.itemId}'`;
         db.query(mySql,(err, res) => {
@@ -193,6 +199,7 @@ app.post("/signin", (req, res) => {
         })
 
 
+
         let getEmail = `SELECT email FROM users WHERE userID IN ( SELECT user_id FROM items WHERE itemID= '${data.itemId}') `;
         db.query(getEmail, (err, results) => {
             res.send(results);
@@ -230,13 +237,7 @@ app.post("/signin", (req, res) => {
 
        
         
-/// Sending notifications on the server
-const sendPushNotification = async (targetExpoPushToken, message) => {
-  const expo = new Expo();
-  const chunks = expo.chunkPushNotifications([
-    { to: "ExponentPushToken[YicjqaBi3UKJDvLTmutNHz]", sound: "default", body: "Demoooo" }
-  ]);
-}
+
 
 require("./app/routes/routes.js")(app);
 // require("./app/routes/item.routes.js")(app2);

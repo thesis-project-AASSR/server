@@ -123,6 +123,7 @@ Item.actions = (actionsInfo, result) => {
           });
 };
 
+
 ///capture the changeling by run a triggering script
 Item.notifications = (actionsInfo, result) => { 
   var mySql =   `CREATE TRIGGER myTrigger AFTER UPDATE ON items
@@ -158,5 +159,6 @@ result(null, { id: res.insertId, ...actionsInfo });
 
   /*********************************************************************** */
 };
+
 
 module.exports = Item;

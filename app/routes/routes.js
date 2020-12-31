@@ -28,8 +28,10 @@ app.post("/actions", controller.actions);
   //update users
 app.put("/UsersUpdate/:id", controller.updateUsers);
 
+
 //send a push notifications(accepted & rejected)
 app.post("/notifications", controller.notifications);
+
   // Create a new User (Signup)
   // app.post("/signup", controller.create);
 
