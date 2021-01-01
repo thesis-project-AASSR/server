@@ -124,39 +124,48 @@ Item.actions = (actionsInfo, result) => {
 };
 
 ///capture the changeling by run a triggering script
-Item.notifications = (actionsInfo, result) => { 
-  var mySql =   `CREATE TRIGGER myTrigger AFTER UPDATE ON items
-  FOR EACH ROW
-  BEGIN
-     IF !(NEW.status <=> OLD.status) THEN
-      INSERT INTO items (description) VALUES("done") ;
-     END IF;
-  END`;
-
-  sql.query(mySql,(err, res) => {
+Item.notifications = (result) => { 
+  ///check if there is any updated status by check if there is any inserted value in status_audit
+  var counter =`SELECT COUNT(*) FROM status_audit `
+  sql.query(counter,(err, res) => {
     if (err) {
       console.log("error: ", err);
-      result(err, null);
-      return;
     }
-console.log("created item: ", { id: res.insertId, ...actionsInfo });
-result(null, { id: res.insertId, ...actionsInfo });
+  console.log("counter: ", res[0]['COUNT(*)']);
+  if(res[0]['COUNT(*)']!==0){
+    //if the table isn't empty, return the last row 
+    var mySql = `SELECT * FROM status_audit WHERE id = (SELECT max(id) FROM status_audit)`;
+    sql.query(mySql,(err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      // delete the last row to make it empty again
+      var mySql1 = `DELETE FROM status_audit ORDER BY id  LIMIT 1;`;
+      sql.query( mySql1,(err, res) => {
+        console.log("deleted Item with id: ", res);
+        if (err) {
+          console.log("error: ", err);
+          return;
+        }
+
+console.log("created item: ", res);
+result(null, res);
+})
+});
+}
+/// if the status_audit empty
+else result(null, "there is no new action")
+  /********************************************* */
+  // var mySql1 = `DELETE FROM status_audit WHERE id = (SELECT LAST_INSERT_ID())`
+  // var mySql1 = `DELETE FROM status_audit AS deletedValue  WHERE id =  (SELECT max(id) FROM status_audit)`
+/*********************************************************************** */  
 });
   
-
-  /********************************************* */
-  // var mySql = `UPDATE items SET status = '${actionsInfo.status}',acceptationStat = ${actionsInfo.acceptationStat}, rejectionStat = ${actionsInfo.rejectionStat} WHERE itemID = '${actionsInfo.itemId}'`;
-  //        sql.query(mySql,(err, res) => {
-  //                 if (err) {
-  //                   console.log("error: ", err);
-  //                   result(err, null);
-  //                   return;
-  //                 }
-  //       console.log("created item: ", { id: res.insertId, ...actionsInfo });
-  //           result(null, { id: res.insertId, ...actionsInfo });
-  //         });
-
-  /*********************************************************************** */
 };
 
 module.exports = Item;
+
+// INSERT INTO wishlist (car) VALUES( '${actionsInfo}') ;
+// `Insert into users (username, email, password ) VALUES ('${user.username}','${user.email}','${user.password}' )`

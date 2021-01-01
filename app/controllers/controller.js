@@ -182,13 +182,8 @@ exports.updateUsers = (req, res) => {
 
 
 exports.notifications = (req, res) => {
-  console.log(".......",req.body);   //the object (data) which we get from front end
-  // items send by the front end
-  const item = ({
-    itemId: req.body.itemId,
-  });
   // Save Sataus in the database
-  Item.notifications(item, (err, data) => {
+  Item.notifications((err, data) => {
     if (err)
       res.status(500).send({
         message:
