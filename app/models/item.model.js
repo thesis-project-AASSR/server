@@ -124,7 +124,7 @@ Item.actions = (actionsInfo, result) => {
 };
 
 ///capture the changeling by run a triggering script
-Item.notifications = (result) => { 
+Item.notifications = (notInfo,result) => { 
   var obj={}
   ///check if there is any updated status by check if there is any inserted value in status_audit
   var counter =`SELECT COUNT(*) FROM status_audit `
@@ -152,7 +152,7 @@ Item.notifications = (result) => {
           console.log("error: ", err);
           return;
         }
-      var mySql2 = `SELECT email FROM users WHERE id = 1`;
+      var mySql2 = `SELECT token FROM users WHERE user_id = '${notInfo.userID}'`;
       sql.query(mySql2,(err, res2) => {
         if (err) {
           console.log("error: ", err);
@@ -161,33 +161,26 @@ Item.notifications = (result) => {
         }
         obj.info[0].token=res2[0]["email"]
         // console.log("res222222222222222: ", res2[0]["email"]);
-        // console.log("obbbbjjjjjj: ", obj)
         result(null, obj);
-//  res1.LNG=1
+
 //  console.log("created item: ", res);
 })
 })
-// console.log("obbbbjjjjjj: ", obj)
 
 });
 }
 /// if the status_audit empty
-// else result(null, "there is no new action")
 else {
-  // res[0].LNG=0
-  // console.log("...................item: ", res);
+
   result(null,  obj)}
-  /********************************************* */
-  // var mySql1 = `DELETE FROM status_audit WHERE id = (SELECT LAST_INSERT_ID())`
-  // var mySql1 = `DELETE FROM status_audit AS deletedValue  WHERE id =  (SELECT max(id) FROM status_audit)`
-/*********************************************************************** */  
+
 });
   
 };
 
 // Save Sataus in the database
 Item.expoPushTokens = (tokenInfo, result) => {
-  var mySql = `UPDATE items SET status = '${tokenInfo.token}' WHERE id = '${tokenInfo.userID}'`;
+  var mySql = `UPDATE items SET status = '${tokenInfo.token}' WHERE user_id = '${tokenInfo.userID}'`;
          sql.query(mySql,(err, res) => {
                   if (err) {
                     console.log("error: ", err);
@@ -201,5 +194,3 @@ Item.expoPushTokens = (tokenInfo, result) => {
 
 module.exports = Item;
 
-// INSERT INTO wishlist (car) VALUES( '${actionsInfo}') ;
-// `Insert into users (username, email, password ) VALUES ('${user.username}','${user.email}','${user.password}' )`

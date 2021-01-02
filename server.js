@@ -10,10 +10,8 @@ dotenv.config({ path: '../../.env' });
 const cors = require('cors');
 const app = express();
 const paypal = require('@paypal/payouts-sdk');
-const { Expo } = require("expo-server-sdk");
 var nodemailer = require("nodemailer");
-//validation
-// const joi = require ('@hapi/joi');
+
 
 // const signschema = joi.object({
 //   username: joi.string().min(6).required(),
@@ -138,9 +136,42 @@ app.post("/signin", (req, res) => {
            itemId:req.body.itemId,
           acceptationStat: req.body.acceptationStat,
           rejectionStat: req.body.rejectionStat,
-          status:req.body.status,
-          sender: req.body.sender
+          status:req.body.status
         }
+        let getEmail = `SELECT email FROM users WHERE userID IN ( SELECT user_id FROM items WHERE itemID= '${data.itemId}') `;
+        
+        db.query(getEmail, (err, results) => {
+          // console.log("emaiiiil:", results[0]);
+            res.send(results);
+      
+            console.log("emaiiiil:", results[0].email);
+      
+            var transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    user: "tashmanrazan@gmail.com",
+                    pass: "Z2013972043",
+                },
+            });
+      
+            var mailOptions = {
+                from: "tashmanrazan@gmail.com",
+                to: results[0].email,
+                subject: "Dawerha For Recycling ",
+                cc: "areenbdran9@gmail.com",
+                text: 'Your purchase was successful, you can check your PayPal account  https://www.paypal.com/us/signin'
+            };
+      
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log("Email sent: " + info.response);
+                }
+            });
+        });
+      
+
         var mySql = `UPDATE items SET status = '${data.status}',acceptationStat = ${data.acceptationStat}, rejectionStat = ${data.rejectionStat} WHERE id = '${data.itemId}'`;
         db.query(mySql,(err, res) => {
                  if (err)
@@ -193,50 +224,12 @@ app.post("/signin", (req, res) => {
         })
 
 
-        let getEmail = `SELECT email FROM users WHERE userID IN ( SELECT user_id FROM items WHERE itemID= '${data.itemId}') `;
-        db.query(getEmail, (err, results) => {
-            res.send(results);
-      
-            console.log("emaiiiil:", results[0].email);
-      
-            var transporter = nodemailer.createTransport({
-                service: "gmail",
-                auth: {
-                    user: "tashmanrazan@gmail.com",
-                    pass: "Z2013972043",
-                },
-            });
-      
-            var mailOptions = {
-                from: "tashmanrazan@gmail.com",
-                to: results[0].email,
-                subject: "Dawerha For Recycling ",
-                cc: "areenbdran9@gmail.com",
-                text: 'Your purchase was successful, you can check your PayPal account  https://www.paypal.com/us/signin'
-            };
-      
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log("Email sent: " + info.response);
-                }
-            });
-        });
-      
-
+    
       
       })
 
        
         
-/// Sending notifications on the server
-const sendPushNotification = async (targetExpoPushToken, message) => {
-  const expo = new Expo();
-  const chunks = expo.chunkPushNotifications([
-    { to: "ExponentPushToken[YicjqaBi3UKJDvLTmutNHz]", sound: "default", body: "Demoooo" }
-  ]);
-}
 
 require("./app/routes/routes.js")(app);
 // require("./app/routes/item.routes.js")(app2);

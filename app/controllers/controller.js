@@ -182,8 +182,11 @@ exports.updateUsers = (req, res) => {
 
 
 exports.notifications = (req, res) => {
+  const data = ({
+    userID: req.body.userID
+  });
   // Save Sataus in the database
-  Item.notifications((err, data) => {
+  Item.notifications(notInfo,(err, data) => {
     if (err)
       res.status(500).send({
         message:
