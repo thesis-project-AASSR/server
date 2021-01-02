@@ -147,18 +147,28 @@ Item.notifications = (result) => {
       // delete the last row to make it empty again
       var mySql1 = `DELETE FROM status_audit ORDER BY id  LIMIT 1;`;
       sql.query( mySql1,(err, res) => {
-        console.log("deleted Item with id: ", res);
+        // console.log("deleted Item with id: ", res);
         if (err) {
           console.log("error: ", err);
           return;
         }
-
-
+      var mySql2 = `SELECT email FROM users WHERE id = 1`;
+      sql.query(mySql2,(err, res2) => {
+        if (err) {
+          console.log("error: ", err);
+          result(err, null);
+          return;
+        }
+        obj.info[0].token=res2[0]["email"]
+        // console.log("res222222222222222: ", res2[0]["email"]);
+        // console.log("obbbbjjjjjj: ", obj)
+        result(null, obj);
 //  res1.LNG=1
- console.log("created item: ", res);
-
+//  console.log("created item: ", res);
 })
-result(null, obj);
+})
+// console.log("obbbbjjjjjj: ", obj)
+
 });
 }
 /// if the status_audit empty
