@@ -131,11 +131,11 @@ Item.notifications = (result) => {
     if (err) {
       console.log("error: ", err);
     }
-  console.log("counter: ", res[0]['COUNT(*)']);
+  // console.log("counter: ", res[0]['COUNT(*)']);
   if(res[0]['COUNT(*)']!==0){
     //if the table isn't empty, return the last row 
     var mySql = `SELECT * FROM status_audit WHERE id = (SELECT max(id) FROM status_audit)`;
-    sql.query(mySql,(err, res) => {
+    sql.query(mySql,(err, res1) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -150,19 +150,39 @@ Item.notifications = (result) => {
           return;
         }
 
-console.log("created item: ", res);
+
+//  res1.LNG=1
+ console.log("created item: ", res);
 result(null, res);
 })
 });
 }
 /// if the status_audit empty
-else result(null, "there is no new action")
+// else result(null, "there is no new action")
+else {
+  // res[0].LNG=0
+  // console.log("...................item: ", res);
+  result(null,  res)}
   /********************************************* */
   // var mySql1 = `DELETE FROM status_audit WHERE id = (SELECT LAST_INSERT_ID())`
   // var mySql1 = `DELETE FROM status_audit AS deletedValue  WHERE id =  (SELECT max(id) FROM status_audit)`
 /*********************************************************************** */  
 });
   
+};
+
+// Save Sataus in the database
+Item.expoPushTokens = (tokenInfo, result) => {
+  var mySql = `UPDATE items SET status = '${tokenInfo.token}' WHERE id = '${tokenInfo.userID}'`;
+         sql.query(mySql,(err, res) => {
+                  if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                    return;
+                  }
+        console.log("created item: ", { id: res.insertId, ...actionsInfo });
+            result(null, { id: res.insertId, ...actionsInfo });
+          });
 };
 
 module.exports = Item;
