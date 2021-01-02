@@ -125,12 +125,14 @@ Item.actions = (actionsInfo, result) => {
 
 ///capture the changeling by run a triggering script
 Item.notifications = (result) => { 
+  var obj={}
   ///check if there is any updated status by check if there is any inserted value in status_audit
   var counter =`SELECT COUNT(*) FROM status_audit `
   sql.query(counter,(err, res) => {
     if (err) {
       console.log("error: ", err);
     }
+    obj.LENG=res[0]['COUNT(*)']
   // console.log("counter: ", res[0]['COUNT(*)']);
   if(res[0]['COUNT(*)']!==0){
     //if the table isn't empty, return the last row 
@@ -141,6 +143,7 @@ Item.notifications = (result) => {
         result(err, null);
         return;
       }
+      obj.info=res1
       // delete the last row to make it empty again
       var mySql1 = `DELETE FROM status_audit ORDER BY id  LIMIT 1;`;
       sql.query( mySql1,(err, res) => {
@@ -153,8 +156,9 @@ Item.notifications = (result) => {
 
 //  res1.LNG=1
  console.log("created item: ", res);
-result(null, res);
+
 })
+result(null, obj);
 });
 }
 /// if the status_audit empty
@@ -162,7 +166,7 @@ result(null, res);
 else {
   // res[0].LNG=0
   // console.log("...................item: ", res);
-  result(null,  res)}
+  result(null,  obj)}
   /********************************************* */
   // var mySql1 = `DELETE FROM status_audit WHERE id = (SELECT LAST_INSERT_ID())`
   // var mySql1 = `DELETE FROM status_audit AS deletedValue  WHERE id =  (SELECT max(id) FROM status_audit)`
