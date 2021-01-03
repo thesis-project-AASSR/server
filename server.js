@@ -138,7 +138,7 @@ app.post("/signin", (req, res) => {
           rejectionStat: req.body.rejectionStat,
           status:req.body.status
         }
-        let getEmail = `SELECT email FROM users WHERE userID IN ( SELECT user_id FROM items WHERE itemID= '${data.itemId}') `;
+        let getEmail = `SELECT email FROM users WHERE id IN ( SELECT user_id FROM items WHERE itemID= '${data.itemId}') `;
         
         db.query(getEmail, (err, results) => {
           // console.log("emaiiiil:", results[0]);
@@ -177,51 +177,51 @@ app.post("/signin", (req, res) => {
                  if (err)
                    console.log("error: ", err);
                  })
-          var mySql1 = `SELECT price,id FROM items WHERE id = '${data.itemId}' `;
-          db.query(mySql1, (err, results) => {
-            itemsInfo.price=results[0].price
-            itemsInfo.userId=results[0].id
-              console.log("results:",results);
-              console.log("results[0]:",results[0]);
-              console.log("itemsInfo::::::::::",itemsInfo);
-          let mySql2 = `SELECT email FROM users WHERE id = ${itemsInfo.userId} `;
-          db.query(mySql2, (err, results) => {
-              itemsInfo.receiver=results[0].email
-              console.log("itemsInfo:",itemsInfo);
-          });
-          console.log("itemsInfo:",itemsInfo);
-          var requestBody = {
-            "sender_batch_header": {
-              "recipient_type": "EMAIL",
-              "email_message": "SDK payouts test txn",
-              "note": "Enjoy your Payout!!",
-              "email_subject": "This is a test transaction from SDK"
-            }
-            ,
-            "items": [{
-              "note": "Your 5$ Payout!",
-              "amount": {
-                "currency": "USD",
-                "value": req.body.price
-              },
-              "receiver": itemsInfo.receiver,
-              "sender_item_id": data.itemId
-            }]
-          }
-          // Construct a request object and set desired parameters
-        // Here, PayoutsPostRequest() creates a POST request to /v1/payments/payouts
-        let request = new paypal.payouts.PayoutsPostRequest();
-        request.requestBody(requestBody);
-        // Call API with your client and get a response for your call
-          let createPayouts  = async function(){
-            let response = await client.execute(request);
-            console.log(`Response: ${JSON.stringify(response)}`);
-            // If call returns body in response, you can get the deserialized version from the result attribute of the response.
-           console.log(`Payouts Create Response: ${JSON.stringify(response.result)}`);
-           res.send(response)
-        }
-        createPayouts();
-        })
+        //   var mySql1 = `SELECT price,id FROM items WHERE id = '${data.itemId}' `;
+        //   db.query(mySql1, (err, results) => {
+        //     itemsInfo.price=results[0].price
+        //     itemsInfo.userId=results[0].id
+        //       console.log("results:",results);
+        //       console.log("results[0]:",results[0]);
+        //       console.log("itemsInfo::::::::::",itemsInfo);
+        //   let mySql2 = `SELECT email FROM users WHERE id = ${itemsInfo.userId} `;
+        //   db.query(mySql2, (err, results) => {
+        //       itemsInfo.receiver=results[0].email
+        //       console.log("itemsInfo:",itemsInfo);
+        //   });
+        //   console.log("itemsInfo:",itemsInfo);
+        //   var requestBody = {
+        //     "sender_batch_header": {
+        //       "recipient_type": "EMAIL",
+        //       "email_message": "SDK payouts test txn",
+        //       "note": "Enjoy your Payout!!",
+        //       "email_subject": "This is a test transaction from SDK"
+        //     }
+        //     ,
+        //     "items": [{
+        //       "note": "Your 5$ Payout!",
+        //       "amount": {
+        //         "currency": "USD",
+        //         "value": req.body.price
+        //       },
+        //       "receiver": itemsInfo.receiver,
+        //       "sender_item_id": data.itemId
+        //     }]
+        //   }
+        //   // Construct a request object and set desired parameters
+        // // Here, PayoutsPostRequest() creates a POST request to /v1/payments/payouts
+        // let request = new paypal.payouts.PayoutsPostRequest();
+        // request.requestBody(requestBody);
+        // // Call API with your client and get a response for your call
+        //   let createPayouts  = async function(){
+        //     let response = await client.execute(request);
+        //     console.log(`Response: ${JSON.stringify(response)}`);
+        //     // If call returns body in response, you can get the deserialized version from the result attribute of the response.
+        //    console.log(`Payouts Create Response: ${JSON.stringify(response.result)}`);
+        //    res.send(response)
+        // }
+        // createPayouts();
+        // })
 
 
     

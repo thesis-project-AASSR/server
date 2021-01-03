@@ -29,7 +29,7 @@ app.post("/actions", controller.actions);
 app.put("/UsersUpdate/:id", controller.updateUsers);
 
 //send a push notifications(accepted & rejected)
-app.get("/notifications", controller.notifications);
+app.post("/notifications", controller.notifications);
 app.post("/expoPushTokens", controller.expoPushTokens);
 
   // Create a new User (Signup)
