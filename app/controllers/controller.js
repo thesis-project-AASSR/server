@@ -176,3 +176,39 @@ exports.updateUsers = (req, res) => {
     }
   );
 };
+
+exports.notifications = (req, res) => {
+  const data = ({
+    userID: req.body.userID
+  });
+  // Save Sataus in the database
+  Item.notifications(notInfo,(err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while adding the sataus."
+      });
+    else res.send(data);
+    // console.log("data:",data)
+  });
+};
+/// save the device token on the DB
+exports.expoPushTokens = (req, res) => {
+  console.log(".......",req.body);   //the object (data) which we get from front end
+  // items send by the front end
+  const data = ({
+    token: req.body.token,
+    userID: req.body.userID
+  });
+  // Save Sataus in the database
+  Item.expoPushTokens(data, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while adding the sataus."
+      });
+    else res.send(data);
+    // console.log("data:",data)
+  });
+};
+
