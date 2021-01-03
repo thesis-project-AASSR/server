@@ -9,7 +9,7 @@ const User = function(user) {
   this.phoneNumber = user.phoneNumber;
   this.location = user.location;
   this.image = user.image;
-  this.iBan = user.iBan; //bank account ==> not required to fill it now
+
 };
 
 
@@ -41,6 +41,28 @@ User.GetUser = result => {
     result(null, res);
     console.log(result)
   });
+};
+
+User.updateById = (id, User) => {
+  sql.query(
+    "UPDATE users SET username = ?, email = ?, phoneNumber = ?, location = ?, image= ? WHERE userID = ?",
+    [User.username , User.email , User.phoneNumber , User.location, User.image , id  ],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        // result(null, err);
+        return;
+      }
+       if (res.affectedRows == 0) {
+        // not found Customer with the id
+        // result({ kind: "not_found" }, null);
+        return;
+      }
+      console.log("updated user: ", { id: id, User });
+      // result(null, { id: id, ...User });
+      console.log(id,"id")
+    }
+  );
 };
 
 module.exports = User;

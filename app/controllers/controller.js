@@ -13,12 +13,16 @@ exports.addItem = (req, res) => {
   console.log(".......",req.body);   //the object (data) which we get from front end
   // items send by the front end 
   const item = ({
+       status:req.body.status,
        category: req.body.category,
       quantity: req.body.quantity,
       description: req.body.description,
       weight: req.body.weight,
       image: req.body.image,
-      price: req.body.price
+      price: req.body.price,
+      location:req.body.location,
+      user_id:req.body.user_id
+
   });
 
   // Save Customer in the database
@@ -118,4 +122,57 @@ exports.deleteItem = (req, res) => {
       }
     } else res.send({ message: `Item was deleted successfully!` });
   });
+};
+
+exports.actions = (req, res) => {
+  console.log(".......",req.body);   //the object (data) which we get from front end
+  // items send by the front end
+  const item = ({
+    itemId: req.body.itemId,
+    status: req.body.status,
+    acceptationStat:req.body.acceptationStat,
+    rejectionStat:req.body.rejectionStat
+  });
+  // Save Sataus in the database
+  Item.actions(item, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while adding the sataus."
+      });
+    else res.send(data);
+    // console.log("data:",data)
+  });
+};
+
+
+/// update users and admin 
+exports.updateUsers = (req, res) => {
+  // Validate Request
+  console.log(req.body)
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+  console.log('User',req.body);
+ User.updateById(
+    req.params.id,
+    new User(req.body),
+    console.log(req.body),
+    (err, data) => {
+      console.log("id", req.params.id)
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found Customer with id ${req.params.id}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating Customer with id " + req.params.id
+          });
+        }
+      } else res.send(data);
+    }
+  );
 };

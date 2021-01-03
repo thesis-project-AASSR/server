@@ -22,9 +22,11 @@ module.exports = app => {
 //find the user
 app.get("/UserProfile", controller.findUser);
 
-
+app.post("/actions", controller.actions);
   // app.get("/see", controller.now);
 
+  //update users
+app.put("/UsersUpdate/:id", controller.updateUsers);
 
   // Create a new User (Signup)
   // app.post("/signup", controller.create);

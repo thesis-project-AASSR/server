@@ -9,7 +9,12 @@ const Item = function(item) {
   this.description = item.description;
   this.image = item.image;
   this.price = item.price;
+  this.location = item.location;
   this.user_id = item.user_id;
+  this.status = item.status;
+  this.acceptationStat = this.acceptationStat;
+  this.rejectionStat = this.rejectionStat;
+
   //this.foreign key = user.id;
 };
 
@@ -19,12 +24,13 @@ const Item = function(item) {
 //==========================================================================
 // creating the request to add the item to the table
 Item.addItem = (newItem, result) => {
+  console.log(newItem)
   var mySql = `INSERT INTO items
         (
-            category, quantity, description, weight, image, price 
+            category, quantity, description, weight, image, price ,location,user_id,status
         )
         VALUES
-         (?,?,?,?,?,? )`;
+         (?,?,?,?,?,?,?,? ,?)`;
          sql.query(mySql,
             [
               newItem.category,
@@ -33,7 +39,9 @@ Item.addItem = (newItem, result) => {
               newItem.weight,
               newItem.image,
               newItem.price,
-              newItem.user_id
+              newItem.location,
+              newItem.user_id,
+              "Pending"
             ],(err, res) => {
                   if (err) {
                     console.log("error: ", err);
@@ -64,8 +72,8 @@ Item.getAll = result => {
 // updating the items in our database
 Item.updateById = (id, newItem, result) => {
   sql.query(
-    "UPDATE items SET category = ?, quantity = ?, description = ?, weight = ? WHERE itemID = ?",
-    [newItem.category, newItem.quantity, newItem.description,newItem.weight,id],
+    "UPDATE items SET category = ?, quantity = ?, description = ?, weight = ?, price = ? WHERE itemID = ?",
+    [newItem.category, newItem.quantity, newItem.description,newItem.weight,newItem.price,id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -100,6 +108,19 @@ Item.remove = (id, result) => {
     console.log("deleted Item with id: ", id);
     result(null, res);
   });
+};
+
+Item.actions = (actionsInfo, result) => {
+  var mySql = `UPDATE items SET status = '${actionsInfo.status}',acceptationStat = ${actionsInfo.acceptationStat}, rejectionStat = ${actionsInfo.rejectionStat} WHERE itemID = '${actionsInfo.itemId}'`;
+         sql.query(mySql,(err, res) => {
+                  if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                    return;
+                  }
+        console.log("created item: ", { id: res.insertId, ...actionsInfo });
+            result(null, { id: res.insertId, ...actionsInfo });
+          });
 };
 
 module.exports = Item;
