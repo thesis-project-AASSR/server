@@ -25,7 +25,10 @@
   "homepage": "https://github.com/Areenbadran/server#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+<<<<<<< HEAD
     "@paypal/payouts-sdk": "^1.0.0",
+=======
+>>>>>>> 3e3b64063f48e639654c26cf306588f5d4cd1d92
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
