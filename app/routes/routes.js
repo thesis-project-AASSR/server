@@ -8,7 +8,6 @@ module.exports = app => {
 
 
 
-
   // Update a items with itemsId
 
   app.put("/items/:id", controller.updateitems);
