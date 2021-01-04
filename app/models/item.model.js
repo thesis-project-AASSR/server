@@ -123,4 +123,68 @@ Item.actions = (actionsInfo, result) => {
           });
 };
 
+///capture the changeling by run a triggering script
+Item.notifications = (notInfo,result) => { 
+  var obj={}
+  ///check if there is any updated status by check if there is any inserted value in status_audit
+  var counter =`SELECT COUNT(*) FROM status_audit `
+  sql.query(counter,(err, res) => {
+    if (err) {
+      console.log("error: ", err);
+    }
+    obj.LENG=res[0]['COUNT(*)']
+  // console.log("counter: ", res[0]['COUNT(*)']);
+  if(res[0]['COUNT(*)']!==0){
+    //if the table isn't empty, return the last row 
+    var mySql = `SELECT * FROM status_audit WHERE id = (SELECT max(id) FROM status_audit)`;
+    sql.query(mySql,(err, res1) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      obj.info=res1
+      // delete the last row to make it empty again
+      var mySql1 = `DELETE FROM status_audit ORDER BY id  LIMIT 1;`;
+      sql.query( mySql1,(err, res) => {
+        // console.log("deleted Item with id: ", res);
+        if (err) {
+          console.log("error: ", err);
+          return;
+        }
+      var mySql2 = `SELECT token FROM users WHERE userID = '${notInfo.userID}'`;
+      sql.query(mySql2,(err, res2) => {
+        if (err) {
+          console.log("error: ", err);
+          result(err, null);
+          return;
+        }
+        obj.info[0].token=res2[0]["email"]
+        // console.log("res222222222222222: ", res2[0]["email"]);
+        result(null, obj);
+//  console.log("created item: ", res);
+})
+})
+});
+}
+/// if the status_audit empty
+else {
+  result(null,  obj)}
+});
+};
+// Save Sataus in the database
+Item.expoPushTokens = (tokenInfo, result) => {
+  var mySql = `UPDATE items SET status = '${tokenInfo.token}' WHERE user_id = '${tokenInfo.userID}'`;
+         sql.query(mySql,(err, res) => {
+                  if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                    return;
+                  }
+        console.log("created item: ", { id: res.insertId, ...actionsInfo });
+            result(null, { id: res.insertId, ...actionsInfo });
+          });
+};
+
+
 module.exports = Item;
