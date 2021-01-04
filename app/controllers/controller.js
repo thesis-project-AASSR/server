@@ -177,10 +177,6 @@ exports.updateUsers = (req, res) => {
   );
 };
 
-
-
-
-
 exports.notifications = (req, res) => {
   const data = ({
     userID: req.body.userID
@@ -196,9 +192,6 @@ exports.notifications = (req, res) => {
     // console.log("data:",data)
   });
 };
-
-
-
 /// save the device token on the DB
 exports.expoPushTokens = (req, res) => {
   console.log(".......",req.body);   //the object (data) which we get from front end
@@ -218,3 +211,4 @@ exports.expoPushTokens = (req, res) => {
     // console.log("data:",data)
   });
 };
+

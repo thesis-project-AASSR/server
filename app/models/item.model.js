@@ -152,7 +152,7 @@ Item.notifications = (notInfo,result) => {
           console.log("error: ", err);
           return;
         }
-      var mySql2 = `SELECT token FROM users WHERE user_id = '${notInfo.userID}'`;
+      var mySql2 = `SELECT token FROM users WHERE userID = '${notInfo.userID}'`;
       sql.query(mySql2,(err, res2) => {
         if (err) {
           console.log("error: ", err);
@@ -162,22 +162,16 @@ Item.notifications = (notInfo,result) => {
         obj.info[0].token=res2[0]["email"]
         // console.log("res222222222222222: ", res2[0]["email"]);
         result(null, obj);
-
 //  console.log("created item: ", res);
 })
 })
-
 });
 }
 /// if the status_audit empty
 else {
-
   result(null,  obj)}
-
 });
-  
 };
-
 // Save Sataus in the database
 Item.expoPushTokens = (tokenInfo, result) => {
   var mySql = `UPDATE items SET status = '${tokenInfo.token}' WHERE user_id = '${tokenInfo.userID}'`;
@@ -192,5 +186,5 @@ Item.expoPushTokens = (tokenInfo, result) => {
           });
 };
 
-module.exports = Item;
 
+module.exports = Item;

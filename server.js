@@ -11,30 +11,24 @@ const cors = require('cors');
 const app = express();
 const paypal = require('@paypal/payouts-sdk');
 var nodemailer = require("nodemailer");
-
-
+//validation
+// const joi = require ('@hapi/joi');
 // const signschema = joi.object({
 //   username: joi.string().min(6).required(),
 //   email: joi.string().required().email(),
 //   password: joi.string().min(8).required()
 // });
-
-
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.urlencoded({ extended: false }));
-
 //using CORS
 app.use(cors());
-
-
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "welcome to our deployed app." });
 });
-
 //authentication 
 app.post("/signup", (req, res) => {
    const username =  req.body.username;
@@ -44,18 +38,14 @@ app.post("/signup", (req, res) => {
    const location = req.body.location;
    const image = req.body.image;
    const iBan = req.body.iBan;
- 
   //  if (username) {
   //    res.send({message: "user already exist"});
   //  } 
-
   // const {error} = signschema.validate(req.body);
   // if (error) {
   //   return res.status(400).send(error.details[0].message);
   // }
-
   bcrypt.hash(password, saltRounds, (err, hash) => {
-    
     if (err) {
       console.log(err);
     }
@@ -87,12 +77,10 @@ app.post("/signup", (req, res) => {
     }
   });
 });
-
 app.post("/signin", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const id = req.body.id;
-
   //checks the database
   db.query("SELECT * FROM users WHERE email = ?;", email, (err, result) => {
      if (err) {
@@ -120,122 +108,111 @@ app.post("/signin", (req, res) => {
        }
        );
         });
-
-
         let clientId = "Aes7p8OE4sBMwHolQa-6mkFoLsTZOpL-EIL8s26eW461Je9N9R5bcE9NzbsvuHADapydUlUZdT6mv19P";
         let clientSecret = "EOMfECpVcAbevWtpRnjzxhC4fMgnk39YT4rp4fV3V8CT8ZO11-2O56z1pAK_ZDSaAi910Eh12nj3L2_w";
         let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret);
         let client = new paypal.core.PayPalHttpClient(environment);
-
-
-        app.post("/purchase", (req, res) => {
-            itemsInfo = {}
-          console.log("req.body:",req.body)
-
-         data ={
-           itemId:req.body.itemId,
-          acceptationStat: req.body.acceptationStat,
-          rejectionStat: req.body.rejectionStat,
-          status:req.body.status
-        }
-        let getEmail = `SELECT email FROM users WHERE id IN ( SELECT user_id FROM items WHERE itemID= '${data.itemId}') `;
-        
-        db.query(getEmail, (err, results) => {
-          // console.log("emaiiiil:", results[0]);
-            res.send(results);
-      
-            console.log("emaiiiil:", results[0].email);
-      
-            var transporter = nodemailer.createTransport({
-                service: "gmail",
-                auth: {
-                    user: "tashmanrazan@gmail.com",
-                    pass: "Z2013972043",
-                },
-            });
-      
-            var mailOptions = {
-                from: "tashmanrazan@gmail.com",
-                to: results[0].email,
-                subject: "Dawerha For Recycling ",
-                cc: "areenbdran9@gmail.com",
-                text: 'Your purchase was successful, you can check your PayPal account  https://www.paypal.com/us/signin'
-            };
-      
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log("Email sent: " + info.response);
-                }
-            });
-        });
-      
-
-        var mySql = `UPDATE items SET status = '${data.status}',acceptationStat = ${data.acceptationStat}, rejectionStat = ${data.rejectionStat} WHERE id = '${data.itemId}'`;
-        db.query(mySql,(err, res) => {
-                 if (err)
-                   console.log("error: ", err);
-                 })
-        //   var mySql1 = `SELECT price,id FROM items WHERE id = '${data.itemId}' `;
-        //   db.query(mySql1, (err, results) => {
-        //     itemsInfo.price=results[0].price
-        //     itemsInfo.userId=results[0].id
-        //       console.log("results:",results);
-        //       console.log("results[0]:",results[0]);
-        //       console.log("itemsInfo::::::::::",itemsInfo);
-        //   let mySql2 = `SELECT email FROM users WHERE id = ${itemsInfo.userId} `;
-        //   db.query(mySql2, (err, results) => {
-        //       itemsInfo.receiver=results[0].email
-        //       console.log("itemsInfo:",itemsInfo);
-        //   });
-        //   console.log("itemsInfo:",itemsInfo);
-        //   var requestBody = {
-        //     "sender_batch_header": {
-        //       "recipient_type": "EMAIL",
-        //       "email_message": "SDK payouts test txn",
-        //       "note": "Enjoy your Payout!!",
-        //       "email_subject": "This is a test transaction from SDK"
-        //     }
-        //     ,
-        //     "items": [{
-        //       "note": "Your 5$ Payout!",
-        //       "amount": {
-        //         "currency": "USD",
-        //         "value": req.body.price
-        //       },
-        //       "receiver": itemsInfo.receiver,
-        //       "sender_item_id": data.itemId
-        //     }]
-        //   }
-        //   // Construct a request object and set desired parameters
-        // // Here, PayoutsPostRequest() creates a POST request to /v1/payments/payouts
-        // let request = new paypal.payouts.PayoutsPostRequest();
-        // request.requestBody(requestBody);
-        // // Call API with your client and get a response for your call
-        //   let createPayouts  = async function(){
-        //     let response = await client.execute(request);
-        //     console.log(`Response: ${JSON.stringify(response)}`);
-        //     // If call returns body in response, you can get the deserialized version from the result attribute of the response.
-        //    console.log(`Payouts Create Response: ${JSON.stringify(response.result)}`);
-        //    res.send(response)
-        // }
-        // createPayouts();
-        // })
-
-
-    
-      
-      })
-
        
-        
+        app.post("/purchase", (req, res) => {
+          itemsInfo = {}
+        console.log("req.body:",req.body)
+       data ={
+         itemId:req.body.itemId,
+        acceptationStat: req.body.acceptationStat,
+        rejectionStat: req.body.rejectionStat,
+        status:req.body.status
+      }
+
+      console.log("...................:",data);
+      let getEmail = `SELECT email FROM users WHERE userID IN ( SELECT user_id FROM items WHERE itemID= '${data.itemId}') `;
+      db.query(getEmail, (err, results) => {
+        // console.log("emaiiiil:", results[0]);
+          res.send(results);
+          console.log("emaiiiil:", results[0].email);
+          var transporter = nodemailer.createTransport({
+              service: "gmail",
+              auth: {
+                  user: "tashmanrazan@gmail.com",
+                  pass: "Z2013972043",
+              },
+          });
+          var mailOptions = {
+              from: "tashmanrazan@gmail.com",
+              to: results[0].email,
+              subject: "Dawerha For Recycling ",
+              cc: "areenbdran9@gmail.com",
+              text: 'Your purchase was successful, you can check your PayPal account  https://www.paypal.com/us/signin'
+          };
+          transporter.sendMail(mailOptions, function (error, info) {
+              if (error) {
+                  console.log(error);
+              } else {
+                  console.log("Email sent: " + info.response);
+              }
+          });
+      });
+      var mySql = `UPDATE items SET status = '${data.status}',acceptationStat = ${data.acceptationStat}, rejectionStat = ${data.rejectionStat} WHERE itemID = '${data.itemId}'`;
+      db.query(mySql,(err, res) => {
+               if (err)
+                 console.log("error: ", err);
+               })
+        var mySql1 = `SELECT price,user_id FROM items WHERE itemID = '${data.itemId}' `;
+        db.query(mySql1, (err, results) => {
+          itemsInfo.price=results[0].price
+          itemsInfo.userId=results[0].user_id
+            console.log("results:",results);
+            console.log("results[0]:",results[0]);
+            console.log("itemsInfo::::::::::",itemsInfo);
+        let mySql2 = `SELECT email FROM users WHERE userID = ${itemsInfo.userId} `;
+        db.query(mySql2, (err, results) => {
+            itemsInfo.receiver=results[0].email
+            console.log("itemsInfo:",itemsInfo);
+       
+        console.log("itemsInfo:",itemsInfo);
+        console.log(":::::::::::::::::::::",req.body.price,req.body.price, itemsInfo.receiver,data.itemId);
+        var requestBody = {
+          "sender_batch_header": {
+            "recipient_type": "EMAIL",
+            "email_message": "SDK payouts test txn",
+            "note": "Enjoy your Payout!!",
+            "email_subject": "This is a test transaction from SDK"
+          }
+          ,
+          "items": [{
+            "note": "Your 5$ Payout!",
+            "amount": {
+              "currency": "USD",
+              "value": req.body.price
+            },
+            "receiver": itemsInfo.receiver,
+            "sender_item_id": data.itemId
+          }]
+        }
+
+        // console.log(":::::::::::::::::::::",req.body.price,req.body.price, itemsInfo.receiver,data.itemId);
+        // Construct a request object and set desired parameters
+      // Here, PayoutsPostRequest() creates a POST request to /v1/payments/payouts
+      let request = new paypal.payouts.PayoutsPostRequest();
+      request.requestBody(requestBody);
+      // Call API with your client and get a response for your call
+        let createPayouts  = async function(){
+          let response = await client.execute(request);
+          console.log(`Response: ${JSON.stringify(response)}`);
+          // If call returns body in response, you can get the deserialized version from the result attribute of the response.
+         console.log(`Payouts Create Response: ${JSON.stringify(response.result)}`);
+         res.send(response)
+      }
+      createPayouts();
+      }) });
+    })
 
 require("./app/routes/routes.js")(app);
 // require("./app/routes/item.routes.js")(app2);
-
 // set port, listen for requests
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
+
+
