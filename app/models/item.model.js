@@ -56,7 +56,7 @@ Item.addItem = (newItem, result) => {
 
 // getting all the items from the database
 Item.getAll = result => {
-  sql.query("SELECT * FROM items", (err, res) => {
+  sql.query("SELECT * FROM items ORDER BY itemID DESC", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
