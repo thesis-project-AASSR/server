@@ -132,12 +132,12 @@ app.post("/signin", (req, res) => {
           var transporter = nodemailer.createTransport({
               service: "gmail",
               auth: {
-                  user: "tashmanrazan@gmail.com",
-                  pass: "Z2013972043",
+                  user: "dawerhajo@gmail.com",
+                  pass: "Dawerha@123",
               },
           });
           var mailOptions = {
-              from: "tashmanrazan@gmail.com",
+              from: "dawerhajo@gmail.com",
               to: results[0].email,
               subject: "Dawerha For Recycling ",
               cc: "areenbdran9@gmail.com",
